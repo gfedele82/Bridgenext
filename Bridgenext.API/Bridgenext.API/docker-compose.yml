@@ -1,0 +1,45 @@
+version: "3.9"
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=Pass@word
+      - POSTGRES_USER=developer
+      - POSTGRES_DB=Bridgenext-demo
+    ports:
+      - "5432:5432"
+      
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: developer
+      MONGO_INITDB_ROOT_PASSWORD: Password1234
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: developer
+      ME_CONFIG_MONGODB_ADMINPASSWORD: Password1234
+      ME_CONFIG_MONGODB_URL: mongodb://developer:Password1234@mongo:27017/
+      ME_CONFIG_BASICAUTH: false
+
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio-data:/data
+    environment:
+      - MINIO_ROOT_USER=developer
+      - MINIO_ROOT_PASSWORD=Password1234
+      - MINIO_DEFAULT_BUCKETS=bridgenext
+    command: server /data --console-address ":9001"
+
+volumes:
+  minio-data: 

@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bridgenext.API", "Bridgenext.API\Bridgenext.API.csproj", "{FFD53F8A-8CAA-4638-B1F9-314055AD135E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{2D8EF607-C9FE-4AB0-8B65-0608B8A0B500}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bridgenext.Engine", "..\Bridgenext.Engine\Bridgenext.Engine.csproj", "{F14607B0-3C0D-4075-BE63-5501AD83E04B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bridgenext.Models", "..\Bridgenext.Models\Bridgenext.Models.csproj", "{6827E2B6-E811-406F-8BC2-7F6CFF80B4F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bridgenext.DataAccess", "..\Bridgenext.DataAccess\Bridgenext.DataAccess.csproj", "{6E116D0C-5750-4546-B1A5-B6947A827AC1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bridgenext.Test", "..\Bridgenext.Test\Bridgenext.Test.csproj", "{64A2811E-E0CF-46AE-9258-8E0F12038BC8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FFD53F8A-8CAA-4638-B1F9-314055AD135E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFD53F8A-8CAA-4638-B1F9-314055AD135E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFD53F8A-8CAA-4638-B1F9-314055AD135E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFD53F8A-8CAA-4638-B1F9-314055AD135E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F14607B0-3C0D-4075-BE63-5501AD83E04B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F14607B0-3C0D-4075-BE63-5501AD83E04B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F14607B0-3C0D-4075-BE63-5501AD83E04B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F14607B0-3C0D-4075-BE63-5501AD83E04B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6827E2B6-E811-406F-8BC2-7F6CFF80B4F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6827E2B6-E811-406F-8BC2-7F6CFF80B4F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6827E2B6-E811-406F-8BC2-7F6CFF80B4F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6827E2B6-E811-406F-8BC2-7F6CFF80B4F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E116D0C-5750-4546-B1A5-B6947A827AC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E116D0C-5750-4546-B1A5-B6947A827AC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E116D0C-5750-4546-B1A5-B6947A827AC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E116D0C-5750-4546-B1A5-B6947A827AC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64A2811E-E0CF-46AE-9258-8E0F12038BC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64A2811E-E0CF-46AE-9258-8E0F12038BC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64A2811E-E0CF-46AE-9258-8E0F12038BC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64A2811E-E0CF-46AE-9258-8E0F12038BC8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F14607B0-3C0D-4075-BE63-5501AD83E04B} = {2D8EF607-C9FE-4AB0-8B65-0608B8A0B500}
+		{6827E2B6-E811-406F-8BC2-7F6CFF80B4F5} = {2D8EF607-C9FE-4AB0-8B65-0608B8A0B500}
+		{6E116D0C-5750-4546-B1A5-B6947A827AC1} = {2D8EF607-C9FE-4AB0-8B65-0608B8A0B500}
+		{64A2811E-E0CF-46AE-9258-8E0F12038BC8} = {2D8EF607-C9FE-4AB0-8B65-0608B8A0B500}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3B70D741-C9FD-4A21-8C84-466802EC0C0A}
+	EndGlobalSection
+EndGlobal
