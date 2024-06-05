@@ -1,0 +1,18 @@
+﻿################################################################################
+# Este archivo .gitignore ha sido creado automáticamente por Microsoft(R) Visual Studio.
+################################################################################
+
+/Bridgenext.API/.vs/Bridgenext.API/DesignTimeBuild
+/Bridgenext.API/.vs/Bridgenext.API/FileContentIndex
+/Bridgenext.API/.vs/Bridgenext.API/v17
+/Bridgenext.API/.vs/ProjectEvaluation
+/Bridgenext.API/Bridgenext.API/bin/Debug/net8.0
+/Bridgenext.API/Bridgenext.API/obj
+/Bridgenext.DataAccess/bin/Debug/net8.0
+/Bridgenext.DataAccess/obj
+/Bridgenext.Engine/bin/Debug/net8.0
+/Bridgenext.Engine/obj
+/Bridgenext.Models/bin/Debug/net8.0
+/Bridgenext.Models/obj
+/Bridgenext.Test/bin/Debug/net8.0
+/Bridgenext.Test/obj
