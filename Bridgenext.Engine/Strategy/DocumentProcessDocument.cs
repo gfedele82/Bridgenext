@@ -4,11 +4,15 @@ using Bridgenext.Models.Configurations;
 using Bridgenext.Models.DTO.Request;
 using Bridgenext.Models.Enums;
 using Bridgenext.Models.Schema;
+using DocumentFormat.OpenXml.Office.Word;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Minio;
 using Minio.DataModel.Args;
 using Newtonsoft.Json;
+using UglyToad.PdfPig;
 
 namespace Bridgenext.Engine.Strategy
 {
@@ -71,6 +75,27 @@ namespace Bridgenext.Engine.Strategy
                     var respose = await _minioClient.PutObjectAsync(putRequest);
                     _document.Size = respose.Size;
 
+                    string ext = Path.GetExtension(_document.SourceFile).ToUpper().Replace(".", "");
+
+                    string fileContent = string.Empty;
+
+                    if (ext.Equals("DOC") || ext.Equals("DOCX"))
+                    {
+                        fileContent = ReadWordFile(_document.SourceFile);
+                    }
+                    else if(ext.Equals("PDF"))
+                    {
+                        fileContent = ReadPdfFile(_document.SourceFile);
+                    }
+                    else if(ext.Equals("TXT"))
+                    {
+                        fileContent = ReadTXTFile(_document.SourceFile);
+                    }
+
+                    if(! string.IsNullOrEmpty(fileContent))
+                    {
+                        _document = await _mongoRepository.CreateDocument(_document, fileContent);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -79,13 +104,47 @@ namespace Bridgenext.Engine.Strategy
                     return null;
                 }
 
-                var fileContent = File.ReadAllText(_document.SourceFile);
-
-                _document =await  _mongoRepository.CreateDocument(_document, fileContent);
-
                 return _document;
 
             }
+        }
+
+        private string ReadTXTFile(string path)
+        {
+            return File.ReadAllText(path);
+        }
+
+        private string ReadPdfFile(string path)
+        {
+            string response = string.Empty;
+
+            using (PdfDocument document = PdfDocument.Open(path))
+            {
+                var text = new System.Text.StringBuilder();
+
+                foreach (var page in document.GetPages())
+                {
+                    text.Append(page.Text);
+                }
+
+                response = text.ToString();
+            }
+
+            return response;
+        }
+
+        private string ReadWordFile(string path)
+        {
+            string response = string.Empty;
+
+            using(WordprocessingDocument wordDoc = WordprocessingDocument.Open(path, false))
+            {
+                Body body = wordDoc.MainDocumentPart.Document.Body;
+
+                response = body.InnerText;
+            }
+
+            return response;
         }
     }
 }
