@@ -1,4 +1,5 @@
-﻿using Bridgenext.Engine.Interfaces;
+﻿using Bridgenext.DataAccess.Interfaces;
+using Bridgenext.Engine.Interfaces;
 using Bridgenext.Models.Configurations;
 using Bridgenext.Models.DTO.Request;
 using Bridgenext.Models.Enums;
@@ -12,7 +13,8 @@ using Newtonsoft.Json;
 namespace Bridgenext.Engine.Strategy
 {
     public class DocumentProcessDocument (ILogger<DocumentProcessImage> _logger,
-        IConfigurationRoot _configuration): IProcessDocumentByType
+        IConfigurationRoot _configuration,
+        IMongoRepostory _mongoRepository): IProcessDocumentByType
     {
         private readonly string path = "Document";
 
@@ -24,7 +26,7 @@ namespace Bridgenext.Engine.Strategy
 
             Documents _document = new Documents()
             {
-                Context = addDocumentRequest.Context,
+                Content = addDocumentRequest.Content,
                 CreateDate = DateTime.Now,
                 CreateUser = addDocumentRequest.CreateUser,
                 Description = addDocumentRequest.Description,
@@ -43,7 +45,7 @@ namespace Bridgenext.Engine.Strategy
                 ModifyUser = addDocumentRequest.CreateUser,
                 Name = addDocumentRequest.Name,
                 SourceFile = addDocumentRequest.File,
-                TargetFile = $"{path}/{user.Id.ToString()}/{DateTime.Now.ToString("yyyyMMdd")}_{Path.GetFileName(addDocumentRequest.File)}"
+                TargetFile = $"{path}/{user.Id.ToString()}/{DateTime.Now.ToString("yyyyMMddhhmmss")}_{Path.GetFileName(addDocumentRequest.File)}"
 
             };
 
@@ -76,6 +78,10 @@ namespace Bridgenext.Engine.Strategy
 
                     return null;
                 }
+
+                var fileContent = File.ReadAllText(_document.SourceFile);
+
+                _document =await  _mongoRepository.CreateDocument(_document, fileContent);
 
                 return _document;
 

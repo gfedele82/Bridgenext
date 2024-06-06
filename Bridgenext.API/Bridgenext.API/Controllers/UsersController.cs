@@ -26,7 +26,8 @@ namespace Bridgenext.API.Controllers
             {
                 var addCreateUser = await _userEngine.CreateUser(addUserRequest);
 
-                return CreatedAtAction(nameof(GetUser), new { id = addCreateUser.Id }, addCreateUser);
+              //  return CreatedAtAction(nameof(GetUser), new { id = addCreateUser.Id }, addCreateUser);
+                return Ok(addCreateUser);
             }
             catch (Exception ex)
             {

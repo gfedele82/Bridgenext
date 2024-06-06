@@ -25,6 +25,7 @@ namespace Bridgenext.API.Extensions
             services.AddTransient<IAddressRepository, AddressRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IDocumentRepositoty, DocumentRepository>();
+            services.AddTransient<IMongoRepostory, MongoRepository>();
 
         }
 
@@ -58,6 +59,7 @@ namespace Bridgenext.API.Extensions
             services.AddTransient<IValidator<UpdateUserRequest>, UpdateUserRequestValidator>();
             services.AddTransient<IValidator<CreateAddressRequest>, CreateAddressRequestValidator>();
             services.AddTransient<IValidator<UpdateAddressRequest>, UpdateAddressRequestValidator>();
+            services.AddTransient<IValidator<CreateDocumentRequest>, CreateDocumentRequestValidator>();
         }
 
         public static void RegisterDatabaseContext(this IServiceCollection services, IConfigurationRoot configuration)

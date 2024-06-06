@@ -15,7 +15,7 @@ namespace Bridgenext.Engine.Strategy
 
             Documents _document = new Documents()
             {
-                Context = addDocumentRequest.Context,
+                Content = addDocumentRequest.Content,
                 CreateDate = DateTime.Now,
                 CreateUser = addDocumentRequest.CreateUser,
                 Description = addDocumentRequest.Description,

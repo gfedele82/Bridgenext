@@ -103,43 +103,26 @@ namespace Bridgenext.DataAccess.Repositories
 
         public async Task<Users> InsertAsync(Users user)
         {
-            try
-            {
-                _context.ChangeTracker.Clear();
-                _context.Entry(user.UserTypes).State = EntityState.Unchanged;
+            _context.ChangeTracker.Clear();
+            _context.Entry(user.UserTypes).State = EntityState.Unchanged;
 
-                _context.Users.Add(user);
+            _context.Users.Add(user);
 
-                await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
-                return user;
-            }
-            catch (Exception ex)
-            {
-                string pepe = ex.Message;
-                return null;
-            }
+            return user;
         }
 
         public async Task<Users> UpdateAsync(Users user)
         {
-            try
-            {
+            _context.ChangeTracker.Clear();
 
-                _context.ChangeTracker.Clear();
+            _context.Users.Update(user);
+            _context.Entry(user.UserTypes).State = EntityState.Unchanged;
 
-                _context.Users.Update(user);
-                _context.Entry(user.UserTypes).State = EntityState.Unchanged;
+            await _context.SaveChangesAsync();
 
-                await _context.SaveChangesAsync();
-
-                return user;
-            }
-            catch (Exception ex)
-            {
-                string pepe = ex.Message;
-                return null;
-            }
+            return user;
         }
 
         public async Task DeleteAsync(Users user)

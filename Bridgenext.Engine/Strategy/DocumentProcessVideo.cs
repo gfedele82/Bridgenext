@@ -24,7 +24,7 @@ namespace Bridgenext.Engine.Strategy
 
             Documents _document = new Documents()
             {
-                Context = addDocumentRequest.Context,
+                Content = addDocumentRequest.Content,
                 CreateDate = DateTime.Now,
                 CreateUser = addDocumentRequest.CreateUser,
                 Description = addDocumentRequest.Description,
@@ -43,7 +43,7 @@ namespace Bridgenext.Engine.Strategy
                 ModifyUser = addDocumentRequest.CreateUser,
                 Name = addDocumentRequest.Name,
                 SourceFile = addDocumentRequest.File,
-                TargetFile = $"{path}/{user.Id.ToString()}/{DateTime.Now.ToString("yyyyMMdd")}_{Path.GetFileName(addDocumentRequest.File)}"
+                TargetFile = $"{path}/{user.Id.ToString()}/{DateTime.Now.ToString("yyyyMMddhhmmss")}_{Path.GetFileName(addDocumentRequest.File)}"
             };
 
             using (var _minioClient = new MinioClient().WithEndpoint(minioConfig.EndPoint)

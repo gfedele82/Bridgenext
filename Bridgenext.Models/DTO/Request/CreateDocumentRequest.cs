@@ -6,7 +6,7 @@
 
         public string Description { get; set; }
 
-        public string? Context { get; set; }
+        public string? Content { get; set; }
 
         public string? File { get; set; }
 

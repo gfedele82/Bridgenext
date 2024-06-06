@@ -140,7 +140,7 @@ namespace Bridgenext.Engine
 
                 _logger.LogError($"ModifyUser Error: {ex.Message}");
 
-                throw new ApplicationException(GeneralException.SystemFail);
+                throw new ApplicationException(GeneralExceptions.SystemFail);
 
             }
         }

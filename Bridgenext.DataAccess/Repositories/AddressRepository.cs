@@ -16,7 +16,7 @@ namespace Bridgenext.DataAccess.Repositories
 
         public async Task<PaginatedList<Addreesses>> GetAllAsync(Pagination pagination)
         {
-            var query = _context.Addreesses.AsNoTracking();
+            var query = _context.Addreesses.AsNoTracking().Include(x => x.User);
 
             List<Addreesses> items;
             int total = 0;

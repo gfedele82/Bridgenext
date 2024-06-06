@@ -1,10 +1,10 @@
 ﻿using Bridgenext.Models.DTO.Request;
-using Bridgenext.Models.Schema;
+using Bridgenext.Models.DTO.Response;
 
 namespace Bridgenext.Engine.Interfaces
 {
     public interface IDocumentEngine
     {
-        Task<Documents> CreateDocument(CreateDocumentRequest addDocumentRequest);
+        Task<DocumentDto> CreateDocument(CreateDocumentRequest addDocumentRequest);
     }
 }

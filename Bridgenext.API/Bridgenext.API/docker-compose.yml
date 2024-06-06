@@ -1,4 +1,4 @@
-version: "3.9"
+version: "3.8"
 services:
   db:
     image: postgres
@@ -9,12 +9,23 @@ services:
     ports:
       - "5432:5432"
       
-  mongo:
-    image: mongo
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+       - "27017:27017"
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: developer
       MONGO_INITDB_ROOT_PASSWORD: Password1234
+    volumes:
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 
   mongo-express:
     image: mongo-express
@@ -24,7 +35,7 @@ services:
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: developer
       ME_CONFIG_MONGODB_ADMINPASSWORD: Password1234
-      ME_CONFIG_MONGODB_URL: mongodb://developer:Password1234@mongo:27017/
+      ME_CONFIG_MONGODB_URL: mongodb://developer:Password1234@mongodb:27017/
       ME_CONFIG_BASICAUTH: false
 
   minio:
