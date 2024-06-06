@@ -33,5 +33,7 @@ namespace Bridgenext.Models.Schema
         [Required]
         public Guid IdUser { get; set; }
 
+        public Guid? MongoId { get; set; }
+
     }
 }

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Bridgenext.DataAccess.Migrations
 {
     [DbContext(typeof(UserSystemContext))]
-    [Migration("20240531030039_AddInitialConf")]
+    [Migration("20240606140604_AddInitialConf")]
     partial class AddInitialConf
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace Bridgenext.DataAccess.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.5")
+                .HasAnnotation("ProductVersion", "8.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -185,7 +185,7 @@ namespace Bridgenext.DataAccess.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Context")
+                    b.Property<string>("Content")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreateDate")
@@ -221,10 +221,16 @@ namespace Bridgenext.DataAccess.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
+                    b.Property<Guid?>("MongoId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
+
+                    b.Property<long?>("Size")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("SourceFile")
                         .HasColumnType("text");
@@ -294,7 +300,7 @@ namespace Bridgenext.DataAccess.Migrations
                     b.Property<DateTime>("AuditDate")
                         .HasColumnType("date");
 
-                    b.Property<string>("Context")
+                    b.Property<string>("Content")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreateDate")
@@ -333,10 +339,16 @@ namespace Bridgenext.DataAccess.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
+                    b.Property<Guid?>("MongoId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
+
+                    b.Property<long?>("Size")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("SourceFile")
                         .HasColumnType("text");
@@ -401,13 +413,13 @@ namespace Bridgenext.DataAccess.Migrations
                         new
                         {
                             Id = new Guid("679bd613-da71-48b9-bf5c-b7b598935b77"),
-                            CreateDate = new DateTime(2024, 5, 31, 0, 0, 38, 988, DateTimeKind.Utc).AddTicks(4254),
+                            CreateDate = new DateTime(2024, 6, 6, 11, 6, 3, 511, DateTimeKind.Utc).AddTicks(6294),
                             CreateUser = "Administrator",
                             Email = "admin@admin.admin",
                             FirstName = "Administrator",
                             IdUserType = 1,
                             LastName = "Administrator",
-                            ModifyDate = new DateTime(2024, 5, 31, 0, 0, 38, 988, DateTimeKind.Utc).AddTicks(4269),
+                            ModifyDate = new DateTime(2024, 6, 6, 11, 6, 3, 511, DateTimeKind.Utc).AddTicks(6306),
                             ModifyUser = "Administrator"
                         });
                 });

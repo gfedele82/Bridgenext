@@ -2,10 +2,8 @@
 using Bridgenext.Models.Configurations;
 using Bridgenext.Models.Schema;
 using Microsoft.Extensions.Configuration;
-using MongoDB.Driver.Core.Configuration;
 using MongoDB.Driver;
 using MongoDB.Bson;
-using SharpCompress.Common;
 
 namespace Bridgenext.DataAccess.Repositories
 {
@@ -43,6 +41,10 @@ namespace Bridgenext.DataAccess.Repositories
             };
 
                 _collection.InsertOne(_mongoDocument);
+
+                var id = Guid.Parse(_mongoDocument["_id"].ToString()); 
+
+                document.MongoId = id;
             }
             catch (Exception ex)
             {

@@ -32,6 +32,7 @@ namespace Bridgenext.DataAccess.DTOAdapter
                  Size = dbDocument.Size,
                  SourceFile = dbDocument.SourceFile,
                  TargetFile = dbDocument.TargetFile,
+                 MongoId = dbDocument.MongoId,
                  Users = new UserDto()
                  {
                      CreateDate = dbDocument.Users.CreateDate,

@@ -45,13 +45,15 @@ namespace Bridgenext.DataAccess.Migrations
                     AuditId = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false),
-                    Context = table.Column<string>(type: "text", nullable: true),
+                    Content = table.Column<string>(type: "text", nullable: true),
                     FileName = table.Column<string>(type: "text", nullable: true),
                     SourceFile = table.Column<string>(type: "text", nullable: true),
                     TargetFile = table.Column<string>(type: "text", nullable: true),
+                    Size = table.Column<long>(type: "bigint", nullable: true),
                     Hide = table.Column<bool>(type: "boolean", nullable: false),
                     IdDocumentType = table.Column<int>(type: "integer", nullable: false),
                     IdUser = table.Column<Guid>(type: "uuid", nullable: false),
+                    MongoId = table.Column<Guid>(type: "uuid", nullable: true),
                     CreateUser = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     CreateDate = table.Column<DateTime>(type: "date", nullable: false),
                     ModifyUser = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
@@ -172,13 +174,15 @@ namespace Bridgenext.DataAccess.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
-                    Context = table.Column<string>(type: "text", nullable: true),
+                    Content = table.Column<string>(type: "text", nullable: true),
                     FileName = table.Column<string>(type: "text", nullable: true),
                     SourceFile = table.Column<string>(type: "text", nullable: true),
                     TargetFile = table.Column<string>(type: "text", nullable: true),
+                    Size = table.Column<long>(type: "bigint", nullable: true),
                     Hide = table.Column<bool>(type: "boolean", nullable: false),
                     IdDocumentType = table.Column<int>(type: "integer", nullable: false),
                     IdUser = table.Column<Guid>(type: "uuid", nullable: false),
+                    MongoId = table.Column<Guid>(type: "uuid", nullable: true),
                     CreateUser = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     CreateDate = table.Column<DateTime>(type: "date", nullable: false),
                     ModifyUser = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
@@ -251,7 +255,7 @@ namespace Bridgenext.DataAccess.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "CreateDate", "CreateUser", "Email", "FirstName", "IdUserType", "LastName", "ModifyDate", "ModifyUser" },
-                values: new object[] { new Guid("679bd613-da71-48b9-bf5c-b7b598935b77"), new DateTime(2024, 5, 31, 0, 0, 38, 988, DateTimeKind.Utc).AddTicks(4254), "Administrator", "admin@admin.admin", "Administrator", 1, "Administrator", new DateTime(2024, 5, 31, 0, 0, 38, 988, DateTimeKind.Utc).AddTicks(4269), "Administrator" });
+                values: new object[] { new Guid("679bd613-da71-48b9-bf5c-b7b598935b77"), new DateTime(2024, 6, 6, 11, 6, 3, 511, DateTimeKind.Utc).AddTicks(6294), "Administrator", "admin@admin.admin", "Administrator", 1, "Administrator", new DateTime(2024, 6, 6, 11, 6, 3, 511, DateTimeKind.Utc).AddTicks(6306), "Administrator" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_City",
