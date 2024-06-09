@@ -42,9 +42,9 @@ namespace Bridgenext.API.Extensions
                 return fileTypes switch
                 {
                     FileTypes.Document => ServicesProvider.GetService<DocumentProcessDocument>(),
-                    FileTypes.Video => ServicesProvider.GetService<DocumentProcessImage>(),
+                    FileTypes.Video => ServicesProvider.GetService<DocumentProcessVideo>(),
                     FileTypes.Text => ServicesProvider.GetService<DocumentProcessText>(),
-                    FileTypes.Image => ServicesProvider.GetService<DocumentProcessVideo>(),
+                    FileTypes.Image => ServicesProvider.GetService<DocumentProcessImage>(),
                     _ => throw new ArgumentException("File type not supported")
                 }; ;
             });

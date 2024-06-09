@@ -36,16 +36,13 @@ namespace Bridgenext.DataAccess.Repositories
             {
                 var _mongoDocument = new BsonDocument
                 {
-                { "IdDb", document.Id },
+                { "IdDb", document.Id.ToString() },
                 { "content", fileContent },
                 { "uploadDate", DateTime.Now },
                 { "CreateUser", document.CreateUser}
             };
 
-                _collection.InsertOne(_mongoDocument);
-
-                var id = _mongoDocument["_id"].ToString(); 
-                
+                _collection.InsertOne(_mongoDocument);                 
             }
             catch (Exception ex)
             {

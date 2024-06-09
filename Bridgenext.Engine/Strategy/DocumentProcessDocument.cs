@@ -4,7 +4,6 @@ using Bridgenext.Models.Configurations;
 using Bridgenext.Models.DTO.Request;
 using Bridgenext.Models.Enums;
 using Bridgenext.Models.Schema.DB;
-using DocumentFormat.OpenXml.Office.Word;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.Extensions.Configuration;
@@ -12,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Minio;
 using Minio.DataModel.Args;
 using Newtonsoft.Json;
+using System.Text;
 using UglyToad.PdfPig;
 
 namespace Bridgenext.Engine.Strategy
@@ -81,7 +81,7 @@ namespace Bridgenext.Engine.Strategy
 
                     string fileContent = string.Empty;
 
-                    if (ext.Equals("DOC") || ext.Equals("DOCX"))
+                    if (ext.Equals("DOCX"))
                     {
                         fileContent = ReadWordFile(_document.SourceFile);
                     }
@@ -138,15 +138,21 @@ namespace Bridgenext.Engine.Strategy
         private string ReadWordFile(string path)
         {
             string response = string.Empty;
+            StringBuilder sb = new StringBuilder();
 
-            using(WordprocessingDocument wordDoc = WordprocessingDocument.Open(path, false))
+            using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(path, false))
             {
                 Body body = wordDoc.MainDocumentPart.Document.Body;
+                foreach (var text in body.Descendants<Text>())
+                {
+                    sb.Append(text.Text);
+                }
 
-                response = body.InnerText;
+                response = sb.ToString();
             }
 
             return response;
         }
+
     }
 }
