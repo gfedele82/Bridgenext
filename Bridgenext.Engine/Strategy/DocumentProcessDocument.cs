@@ -3,7 +3,7 @@ using Bridgenext.Engine.Interfaces;
 using Bridgenext.Models.Configurations;
 using Bridgenext.Models.DTO.Request;
 using Bridgenext.Models.Enums;
-using Bridgenext.Models.Schema;
+using Bridgenext.Models.Schema.DB;
 using DocumentFormat.OpenXml.Office.Word;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -24,6 +24,8 @@ namespace Bridgenext.Engine.Strategy
 
         public async Task<Documents> CreateDocument(CreateDocumentRequest addDocumentRequest, Users user)
         {
+            bool process = true;
+
             _logger.LogInformation($"DocumentProcessDocument: Payload = {JsonConvert.SerializeObject(addDocumentRequest)}");
 
             var minioConfig = _configuration.GetSection("Minio").Get<MinioSettings>();
@@ -94,7 +96,7 @@ namespace Bridgenext.Engine.Strategy
 
                     if(! string.IsNullOrEmpty(fileContent))
                     {
-                        _document = await _mongoRepository.CreateDocument(_document, fileContent);
+                        process = await _mongoRepository.CreateDocument(_document, fileContent);
                     }
                 }
                 catch (Exception ex)

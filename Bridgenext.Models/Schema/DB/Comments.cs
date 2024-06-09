@@ -1,9 +1,8 @@
-﻿using Bridgenext.Models.Schema.Base;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
 
-namespace Bridgenext.Models.Schema
+namespace Bridgenext.Models.Schema.DB
 {
     public class Comments
     {

@@ -19,7 +19,7 @@
 
         public bool Hide { get; set; }
 
-        public Guid? MongoId { get; set; }
+        public string? MongoId { get; set; }
 
         public  DocumentTypeDto DocumentType { get; set; } = new DocumentTypeDto();
 

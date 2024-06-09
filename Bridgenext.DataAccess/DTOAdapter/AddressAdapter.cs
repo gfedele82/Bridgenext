@@ -1,6 +1,6 @@
 ﻿using Bridgenext.Models.DTO.Request;
 using Bridgenext.Models.DTO.Response;
-using Bridgenext.Models.Schema;
+using Bridgenext.Models.Schema.DB;
 
 namespace Bridgenext.DataAccess.DTOAdapter
 {

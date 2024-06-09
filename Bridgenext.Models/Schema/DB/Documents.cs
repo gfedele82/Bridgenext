@@ -1,8 +1,8 @@
-﻿using Bridgenext.Models.Schema.Base;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Bridgenext.Models.Schema.DB.Base;
 
-namespace Bridgenext.Models.Schema
+namespace Bridgenext.Models.Schema.DB
 {
     public class Documents : Security
     {
@@ -29,15 +29,13 @@ namespace Bridgenext.Models.Schema
         public long? Size { get; set; }
 
         [Required]
-        public bool Hide {  get; set; }
+        public bool Hide { get; set; }
 
         [Required]
-        public int IdDocumentType { get ; set; }
+        public int IdDocumentType { get; set; }
 
         [Required]
         public Guid IdUser { get; set; }
-
-        public Guid? MongoId { get; set; }
 
         public virtual DocumentsType DocumentType { get; set; } = new DocumentsType();
 

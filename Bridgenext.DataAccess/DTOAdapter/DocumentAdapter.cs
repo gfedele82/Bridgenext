@@ -1,5 +1,5 @@
 ﻿using Bridgenext.Models.DTO.Response;
-using Bridgenext.Models.Schema;
+using Bridgenext.Models.Schema.DB;
 
 namespace Bridgenext.DataAccess.DTOAdapter
 {
@@ -32,7 +32,6 @@ namespace Bridgenext.DataAccess.DTOAdapter
                  Size = dbDocument.Size,
                  SourceFile = dbDocument.SourceFile,
                  TargetFile = dbDocument.TargetFile,
-                 MongoId = dbDocument.MongoId,
                  Users = new UserDto()
                  {
                      CreateDate = dbDocument.Users.CreateDate,

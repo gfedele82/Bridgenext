@@ -1,9 +1,9 @@
-﻿using Bridgenext.Models.Schema;
+﻿using Bridgenext.Models.Schema.DB;
 
 namespace Bridgenext.DataAccess.Interfaces
 {
     public interface IMongoRepostory
     {
-        Task<Documents> CreateDocument(Documents document, string text);
+        Task<bool> CreateDocument(Documents document, string text);
     }
 }

@@ -53,7 +53,6 @@ namespace Bridgenext.DataAccess.Migrations
                     Hide = table.Column<bool>(type: "boolean", nullable: false),
                     IdDocumentType = table.Column<int>(type: "integer", nullable: false),
                     IdUser = table.Column<Guid>(type: "uuid", nullable: false),
-                    MongoId = table.Column<Guid>(type: "uuid", nullable: true),
                     CreateUser = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     CreateDate = table.Column<DateTime>(type: "date", nullable: false),
                     ModifyUser = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
@@ -182,7 +181,6 @@ namespace Bridgenext.DataAccess.Migrations
                     Hide = table.Column<bool>(type: "boolean", nullable: false),
                     IdDocumentType = table.Column<int>(type: "integer", nullable: false),
                     IdUser = table.Column<Guid>(type: "uuid", nullable: false),
-                    MongoId = table.Column<Guid>(type: "uuid", nullable: true),
                     CreateUser = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     CreateDate = table.Column<DateTime>(type: "date", nullable: false),
                     ModifyUser = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
@@ -255,7 +253,7 @@ namespace Bridgenext.DataAccess.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "CreateDate", "CreateUser", "Email", "FirstName", "IdUserType", "LastName", "ModifyDate", "ModifyUser" },
-                values: new object[] { new Guid("679bd613-da71-48b9-bf5c-b7b598935b77"), new DateTime(2024, 6, 6, 11, 6, 3, 511, DateTimeKind.Utc).AddTicks(6294), "Administrator", "admin@admin.admin", "Administrator", 1, "Administrator", new DateTime(2024, 6, 6, 11, 6, 3, 511, DateTimeKind.Utc).AddTicks(6306), "Administrator" });
+                values: new object[] { new Guid("679bd613-da71-48b9-bf5c-b7b598935b77"), new DateTime(2024, 6, 8, 22, 30, 5, 637, DateTimeKind.Utc).AddTicks(7022), "Administrator", "admin@admin.admin", "Administrator", 1, "Administrator", new DateTime(2024, 6, 8, 22, 30, 5, 637, DateTimeKind.Utc).AddTicks(7034), "Administrator" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_City",

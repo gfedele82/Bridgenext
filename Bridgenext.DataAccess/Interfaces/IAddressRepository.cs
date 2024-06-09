@@ -1,5 +1,5 @@
 ﻿using Bridgenext.Models.DTO;
-using Bridgenext.Models.Schema;
+using Bridgenext.Models.Schema.DB;
 using System.Linq.Expressions;
 
 namespace Bridgenext.DataAccess.Interfaces

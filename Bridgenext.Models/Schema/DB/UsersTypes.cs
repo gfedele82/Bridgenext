@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace Bridgenext.Models.Schema
+
+namespace Bridgenext.Models.Schema.DB
 {
-    public class DocumentsType
+    public class UsersTypes
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -11,6 +12,6 @@ namespace Bridgenext.Models.Schema
 
         public string Type { get; set; }
 
-        public virtual List<Documents> Documents { get; set; } = new List<Documents>();
+        public virtual List<Users> Users { get; set; } = new List<Users>();
     }
 }

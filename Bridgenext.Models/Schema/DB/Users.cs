@@ -1,8 +1,8 @@
-﻿using Bridgenext.Models.Schema.Base;
+﻿using Bridgenext.Models.Schema.DB.Base;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Bridgenext.Models.Schema
+namespace Bridgenext.Models.Schema.DB
 {
     public class Users : Security
     {
@@ -23,7 +23,7 @@ namespace Bridgenext.Models.Schema
         public string Email { get; set; }
 
         [Required]
-        public int IdUserType {  get; set; }
+        public int IdUserType { get; set; }
 
         public virtual UsersTypes UserTypes { get; set; } = new UsersTypes();
 

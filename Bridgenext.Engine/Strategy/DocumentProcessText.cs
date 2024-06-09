@@ -1,7 +1,7 @@
 ﻿using Bridgenext.Engine.Interfaces;
 using Bridgenext.Models.DTO.Request;
 using Bridgenext.Models.Enums;
-using Bridgenext.Models.Schema;
+using Bridgenext.Models.Schema.DB;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 

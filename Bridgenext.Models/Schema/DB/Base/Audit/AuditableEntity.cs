@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Bridgenext.Models.Schema.DB.Base;
 
-namespace Bridgenext.Models.Schema.Base.Audit
+namespace Bridgenext.Models.Schema.DB.Base.Audit
 {
     public class AuditableEntity : Security
     {

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Bridgenext.Models.Schema.Base
+namespace Bridgenext.Models.Schema.DB.Base
 {
     public class Security
     {

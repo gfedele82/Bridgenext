@@ -1,10 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Bridgenext.Models.Schema.Base.Audit;
+﻿using Bridgenext.Models.Schema.DB.Base;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Bridgenext.Models.Schema
+namespace Bridgenext.Models.Schema.DB
 {
-    public class Addreesses_History : AuditableEntity
+    public class Addreesses : Security
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public Guid Id { get; set; }
 
         public Guid IdUser { get; set; }
 
@@ -27,5 +31,6 @@ namespace Bridgenext.Models.Schema
         [MaxLength(20)]
         public string Zip { get; set; }
 
+        public virtual Users User { get; set; }
     }
 }

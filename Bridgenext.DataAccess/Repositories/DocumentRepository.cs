@@ -1,6 +1,6 @@
 ﻿using Bridgenext.DataAccess.Interfaces;
 using Bridgenext.Models.DTO;
-using Bridgenext.Models.Schema;
+using Bridgenext.Models.Schema.DB;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;

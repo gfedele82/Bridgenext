@@ -1,9 +1,10 @@
 ﻿using Bridgenext.DataAccess.Interfaces;
 using Bridgenext.Models.Configurations;
-using Bridgenext.Models.Schema;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using MongoDB.Bson;
+using Bridgenext.Models.Constant.Exceptions;
+using Bridgenext.Models.Schema.DB;
 
 namespace Bridgenext.DataAccess.Repositories
 {
@@ -22,7 +23,7 @@ namespace Bridgenext.DataAccess.Repositories
 
         }
 
-        public async Task<Documents> CreateDocument(Documents document, string fileContent)
+        public async Task<bool> CreateDocument(Documents document, string fileContent)
         {
             var clientSettings = MongoClientSettings.FromConnectionString(_stringConnection);
             clientSettings.ServerApi = new ServerApi(ServerApiVersion.V1);
@@ -35,6 +36,7 @@ namespace Bridgenext.DataAccess.Repositories
             {
                 var _mongoDocument = new BsonDocument
                 {
+                { "IdDb", document.Id },
                 { "content", fileContent },
                 { "uploadDate", DateTime.Now },
                 { "CreateUser", document.CreateUser}
@@ -42,17 +44,16 @@ namespace Bridgenext.DataAccess.Repositories
 
                 _collection.InsertOne(_mongoDocument);
 
-                var id = Guid.Parse(_mongoDocument["_id"].ToString()); 
-
-                document.MongoId = id;
+                var id = _mongoDocument["_id"].ToString(); 
+                
             }
             catch (Exception ex)
             {
-                // Handle exceptions
+                return false;
             }
 
 
-            return document;
+            return true;
         }
     }
 }

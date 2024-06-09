@@ -11,8 +11,8 @@ using Bridgenext.Engine.Validators;
 using Bridgenext.Models.Configurations;
 using Bridgenext.Models.DTO.Request;
 using Bridgenext.Models.Enums;
-using Bridgenext.Models.Schema;
-using Bridgenext.Models.Schema.Base.Audit;
+using Bridgenext.Models.Schema.DB;
+using Bridgenext.Models.Schema.DB.Base.Audit;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 

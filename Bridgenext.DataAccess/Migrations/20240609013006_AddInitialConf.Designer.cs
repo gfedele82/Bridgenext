@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Bridgenext.DataAccess.Migrations
 {
     [DbContext(typeof(UserSystemContext))]
-    [Migration("20240606140604_AddInitialConf")]
+    [Migration("20240609013006_AddInitialConf")]
     partial class AddInitialConf
     {
         /// <inheritdoc />
@@ -25,7 +25,7 @@ namespace Bridgenext.DataAccess.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Bridgenext.Models.Schema.Addreesses", b =>
+            modelBuilder.Entity("Bridgenext.Models.Schema.DB.Addreesses", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -86,7 +86,7 @@ namespace Bridgenext.DataAccess.Migrations
                     b.ToTable("Addresses", (string)null);
                 });
 
-            modelBuilder.Entity("Bridgenext.Models.Schema.Addreesses_History", b =>
+            modelBuilder.Entity("Bridgenext.Models.Schema.DB.Addreesses_History", b =>
                 {
                     b.Property<Guid>("AuditId")
                         .ValueGeneratedOnAdd()
@@ -151,7 +151,7 @@ namespace Bridgenext.DataAccess.Migrations
                     b.ToTable("Addresses_History", (string)null);
                 });
 
-            modelBuilder.Entity("Bridgenext.Models.Schema.Comments", b =>
+            modelBuilder.Entity("Bridgenext.Models.Schema.DB.Comments", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -180,7 +180,7 @@ namespace Bridgenext.DataAccess.Migrations
                     b.ToTable("Comments", (string)null);
                 });
 
-            modelBuilder.Entity("Bridgenext.Models.Schema.Documents", b =>
+            modelBuilder.Entity("Bridgenext.Models.Schema.DB.Documents", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -221,9 +221,6 @@ namespace Bridgenext.DataAccess.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<Guid?>("MongoId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -247,7 +244,7 @@ namespace Bridgenext.DataAccess.Migrations
                     b.ToTable("Document", (string)null);
                 });
 
-            modelBuilder.Entity("Bridgenext.Models.Schema.DocumentsType", b =>
+            modelBuilder.Entity("Bridgenext.Models.Schema.DB.DocumentsType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -286,7 +283,7 @@ namespace Bridgenext.DataAccess.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Bridgenext.Models.Schema.Documents_History", b =>
+            modelBuilder.Entity("Bridgenext.Models.Schema.DB.Documents_History", b =>
                 {
                     b.Property<Guid>("AuditId")
                         .ValueGeneratedOnAdd()
@@ -339,9 +336,6 @@ namespace Bridgenext.DataAccess.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<Guid?>("MongoId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -361,7 +355,7 @@ namespace Bridgenext.DataAccess.Migrations
                     b.ToTable("Document_History", (string)null);
                 });
 
-            modelBuilder.Entity("Bridgenext.Models.Schema.Users", b =>
+            modelBuilder.Entity("Bridgenext.Models.Schema.DB.Users", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -413,18 +407,18 @@ namespace Bridgenext.DataAccess.Migrations
                         new
                         {
                             Id = new Guid("679bd613-da71-48b9-bf5c-b7b598935b77"),
-                            CreateDate = new DateTime(2024, 6, 6, 11, 6, 3, 511, DateTimeKind.Utc).AddTicks(6294),
+                            CreateDate = new DateTime(2024, 6, 8, 22, 30, 5, 637, DateTimeKind.Utc).AddTicks(7022),
                             CreateUser = "Administrator",
                             Email = "admin@admin.admin",
                             FirstName = "Administrator",
                             IdUserType = 1,
                             LastName = "Administrator",
-                            ModifyDate = new DateTime(2024, 6, 6, 11, 6, 3, 511, DateTimeKind.Utc).AddTicks(6306),
+                            ModifyDate = new DateTime(2024, 6, 8, 22, 30, 5, 637, DateTimeKind.Utc).AddTicks(7034),
                             ModifyUser = "Administrator"
                         });
                 });
 
-            modelBuilder.Entity("Bridgenext.Models.Schema.UsersTypes", b =>
+            modelBuilder.Entity("Bridgenext.Models.Schema.DB.UsersTypes", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -453,7 +447,7 @@ namespace Bridgenext.DataAccess.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Bridgenext.Models.Schema.Users_History", b =>
+            modelBuilder.Entity("Bridgenext.Models.Schema.DB.Users_History", b =>
                 {
                     b.Property<Guid>("AuditId")
                         .ValueGeneratedOnAdd()
@@ -509,9 +503,9 @@ namespace Bridgenext.DataAccess.Migrations
                     b.ToTable("Users_History", (string)null);
                 });
 
-            modelBuilder.Entity("Bridgenext.Models.Schema.Addreesses", b =>
+            modelBuilder.Entity("Bridgenext.Models.Schema.DB.Addreesses", b =>
                 {
-                    b.HasOne("Bridgenext.Models.Schema.Users", "User")
+                    b.HasOne("Bridgenext.Models.Schema.DB.Users", "User")
                         .WithMany("Addreesses")
                         .HasForeignKey("IdUser")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -520,15 +514,15 @@ namespace Bridgenext.DataAccess.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Bridgenext.Models.Schema.Comments", b =>
+            modelBuilder.Entity("Bridgenext.Models.Schema.DB.Comments", b =>
                 {
-                    b.HasOne("Bridgenext.Models.Schema.Documents", "Documents")
+                    b.HasOne("Bridgenext.Models.Schema.DB.Documents", "Documents")
                         .WithMany("Comments")
                         .HasForeignKey("IdDocumnet")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Bridgenext.Models.Schema.Users", "Users")
+                    b.HasOne("Bridgenext.Models.Schema.DB.Users", "Users")
                         .WithMany("Comments")
                         .HasForeignKey("IdUser")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -539,15 +533,15 @@ namespace Bridgenext.DataAccess.Migrations
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("Bridgenext.Models.Schema.Documents", b =>
+            modelBuilder.Entity("Bridgenext.Models.Schema.DB.Documents", b =>
                 {
-                    b.HasOne("Bridgenext.Models.Schema.DocumentsType", "DocumentType")
+                    b.HasOne("Bridgenext.Models.Schema.DB.DocumentsType", "DocumentType")
                         .WithMany("Documents")
                         .HasForeignKey("IdDocumentType")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Bridgenext.Models.Schema.Users", "Users")
+                    b.HasOne("Bridgenext.Models.Schema.DB.Users", "Users")
                         .WithMany("Documents")
                         .HasForeignKey("IdUser")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -558,9 +552,9 @@ namespace Bridgenext.DataAccess.Migrations
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("Bridgenext.Models.Schema.Users", b =>
+            modelBuilder.Entity("Bridgenext.Models.Schema.DB.Users", b =>
                 {
-                    b.HasOne("Bridgenext.Models.Schema.UsersTypes", "UserTypes")
+                    b.HasOne("Bridgenext.Models.Schema.DB.UsersTypes", "UserTypes")
                         .WithMany("Users")
                         .HasForeignKey("IdUserType")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -569,17 +563,17 @@ namespace Bridgenext.DataAccess.Migrations
                     b.Navigation("UserTypes");
                 });
 
-            modelBuilder.Entity("Bridgenext.Models.Schema.Documents", b =>
+            modelBuilder.Entity("Bridgenext.Models.Schema.DB.Documents", b =>
                 {
                     b.Navigation("Comments");
                 });
 
-            modelBuilder.Entity("Bridgenext.Models.Schema.DocumentsType", b =>
+            modelBuilder.Entity("Bridgenext.Models.Schema.DB.DocumentsType", b =>
                 {
                     b.Navigation("Documents");
                 });
 
-            modelBuilder.Entity("Bridgenext.Models.Schema.Users", b =>
+            modelBuilder.Entity("Bridgenext.Models.Schema.DB.Users", b =>
                 {
                     b.Navigation("Addreesses");
 
@@ -588,7 +582,7 @@ namespace Bridgenext.DataAccess.Migrations
                     b.Navigation("Documents");
                 });
 
-            modelBuilder.Entity("Bridgenext.Models.Schema.UsersTypes", b =>
+            modelBuilder.Entity("Bridgenext.Models.Schema.DB.UsersTypes", b =>
                 {
                     b.Navigation("Users");
                 });

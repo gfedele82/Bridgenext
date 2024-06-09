@@ -1,7 +1,7 @@
 ﻿using Audit.EntityFramework;
 using Bridgenext.Models.Constant.DataAccess;
 using Bridgenext.Models.Enums;
-using Bridgenext.Models.Schema;
+using Bridgenext.Models.Schema.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 

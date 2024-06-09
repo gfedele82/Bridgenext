@@ -1,8 +1,8 @@
-﻿using Bridgenext.Models.Schema.Base.Audit;
+﻿using Bridgenext.Models.Schema.DB.Base.Audit;
 using System.ComponentModel.DataAnnotations;
 
 
-namespace Bridgenext.Models.Schema
+namespace Bridgenext.Models.Schema.DB
 {
     public class Documents_History : AuditableEntity
     {
@@ -32,8 +32,6 @@ namespace Bridgenext.Models.Schema
 
         [Required]
         public Guid IdUser { get; set; }
-
-        public Guid? MongoId { get; set; }
 
     }
 }
