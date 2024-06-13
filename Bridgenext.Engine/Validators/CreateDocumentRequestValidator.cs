@@ -29,11 +29,15 @@ namespace Bridgenext.Engine.Validators
                 .WithMessage(DocumentExceptions.RequiredFileContentSameTime);
 
             RuleFor(x => x.CreateUser).Must(y => !string.IsNullOrEmpty(y))
-                .WithMessage(DocumentExceptions.CreateAddressNotExist);
+                .WithMessage(DocumentExceptions.CreateUserNotExist);
 
             RuleFor(x => x.CreateUser).Must(y => userRepository.IdExistsAsync(y).Result)
                 .When(z => !string.IsNullOrEmpty(z.CreateUser))
                 .WithMessage(DocumentExceptions.UserNotExist);
+
+            RuleFor(x => x.File).Must(y => File.Exists(y))
+                .When(z => !string.IsNullOrEmpty(z.File))
+                .WithMessage(DocumentExceptions.FileNotExist);
 
         }
 

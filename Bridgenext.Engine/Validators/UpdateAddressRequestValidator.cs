@@ -28,7 +28,7 @@ namespace Bridgenext.Engine.Validators
                 .WithMessage(AddressExceptions.RequiredZip);
 
             RuleFor(x => x.ModifyUser).Must(y => !string.IsNullOrEmpty(y))
-                .WithMessage(AddressExceptions.CreateAddressNotExist);
+                .WithMessage(AddressExceptions.CreateUserNotExist);
 
             RuleFor(x => x.Id).Must(y => addressRepository.IdExistsAsync(y).Result)
                 .When(z => z.Id != Guid.Empty)

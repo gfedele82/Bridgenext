@@ -14,10 +14,10 @@ namespace Bridgenext.Engine.Validators
         Regex validateEmailRegex = new Regex("^\\S+@\\S+\\.\\S+$");
         private readonly IUserRepository _userRepository;
 
-        public UpdateUserRequestValidator(IUserRepository userRepository, IConfigurationRoot _configuration)
+        public UpdateUserRequestValidator(IUserRepository userRepository, IConfigurationRoot configuration)
         {
             _userRepository = userRepository;
-            Guid.TryParse(_configuration["IdUserAdmin"], out Guid IdUserAdmin);
+            Guid.TryParse(configuration["IdUserAdmin"], out Guid IdUserAdmin);
 
             RuleFor(x => x.Id).Must(y => y != Guid.Empty)
                 .WithMessage(UserExceptions.RequiredIdUser);

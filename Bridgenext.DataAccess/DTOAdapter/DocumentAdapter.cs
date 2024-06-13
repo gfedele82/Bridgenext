@@ -1,5 +1,7 @@
-﻿using Bridgenext.Models.DTO.Response;
+﻿using Bridgenext.Models.DTO.Request;
+using Bridgenext.Models.DTO.Response;
 using Bridgenext.Models.Schema.DB;
+using Bridgenext.Models.Schema.NotSQL;
 
 namespace Bridgenext.DataAccess.DTOAdapter
 {
@@ -49,6 +51,73 @@ namespace Bridgenext.DataAccess.DTOAdapter
                      }
                  }
             };
+        }
+
+        public static IEnumerable<DocumentDto> ToDomainModel(this IEnumerable<Documents> dbDocuments)
+        {
+            foreach (var document in dbDocuments)
+            {
+                yield return document.ToDomainModel();
+            }
+        }
+
+        public static Documents ToDatabaseModel(this DisableDocumentRequest documentRequest, Documents existDocument)
+        {
+            if (documentRequest == null || existDocument == null)
+            {
+                return null;
+            }
+
+            existDocument.Hide = true;
+            existDocument.ModifyDate = DateTime.Now;
+            existDocument.ModifyUser = documentRequest.ModifyUser;
+
+            return existDocument;
+
+        }
+
+        public static Documents ToDatabaseModel(this UpdateDocumentRequest documentRequest, Documents existDocument)
+        {
+            if (documentRequest == null || existDocument == null)
+            {
+                return null;
+            }
+
+            existDocument.Name = documentRequest.Name;
+            existDocument.Description = documentRequest.Description;
+            existDocument.Content = documentRequest.Content;
+            existDocument.ModifyDate = DateTime.Now;
+            existDocument.ModifyUser = documentRequest.ModifyUser;
+
+            return existDocument;
+
+        }
+
+        public static DocumentSearchDto ToDomainSearchModel (this Documents dbDocument)
+        {
+            if (dbDocument == null)
+                return null;
+
+            return new DocumentSearchDto()
+            {
+                Id = dbDocument.Id,
+                Content = dbDocument.Content,
+                CreateDate = dbDocument.CreateDate,
+                CreateUser = dbDocument.Users.CreateUser,
+                Description = dbDocument.Description,
+                ModifyDate = dbDocument.Users.ModifyDate,
+                ModifyUser = dbDocument.Users.ModifyUser,
+                Name = dbDocument.Name
+            };
+
+        }
+
+        public static IEnumerable<DocumentSearchDto> ToDomainSearchModel(this IEnumerable<Documents> dbDocuments)
+        {
+            foreach (var document in dbDocuments)
+            {
+                yield return document.ToDomainSearchModel();
+            }
         }
     }
 }

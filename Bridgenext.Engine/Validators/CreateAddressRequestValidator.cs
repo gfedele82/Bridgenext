@@ -26,7 +26,7 @@ namespace Bridgenext.Engine.Validators
                 .WithMessage(AddressExceptions.RequiredZip);
 
             RuleFor(x => x.CreateUser).Must(y => !string.IsNullOrEmpty(y))
-                .WithMessage(AddressExceptions.CreateAddressNotExist);
+                .WithMessage(AddressExceptions.CreateUserNotExist);
 
         }
 

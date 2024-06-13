@@ -3,7 +3,6 @@ using Bridgenext.Models.DTO;
 using Bridgenext.Models.DTO.Request;
 using Bridgenext.Models.DTO.Response;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Net.Mime;
 
@@ -26,8 +25,7 @@ namespace Bridgenext.API.Controllers
             {
                 var addCreateUser = await _userEngine.CreateUser(addUserRequest);
 
-              //  return CreatedAtAction(nameof(GetUser), new { id = addCreateUser.Id }, addCreateUser);
-                return Ok(addCreateUser);
+                return CreatedAtAction(nameof(GetUser), new { id = addCreateUser.Id }, addCreateUser);
             }
             catch (Exception ex)
             {

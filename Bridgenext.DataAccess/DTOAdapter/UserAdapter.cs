@@ -44,24 +44,16 @@ namespace Bridgenext.DataAccess.DTOAdapter
                 return null;
             }
 
-            var IdUser = Guid.NewGuid();
-            return new Users
-            {
-                Id = userRequest.Id,
-                IdUserType = userRequest.IdUserType,
-                FirstName = userRequest.FirstName,
-                LastName = userRequest.LastName,
-                Email = userRequest.Email,
-                CreateDate = existUser.CreateDate,
-                CreateUser = existUser.CreateUser,
-                ModifyDate = DateTime.Now,
-                ModifyUser = userRequest.ModifyUser,
-                UserTypes = new UsersTypes()
-                {
-                    Id = userRequest.IdUserType,
-                    Type = Enum.GetName(typeof(UsersTypeEnum), userRequest.IdUserType)
-                }
-            };
+            existUser.IdUserType = userRequest.IdUserType;
+            existUser.FirstName = userRequest.FirstName;
+            existUser.LastName = userRequest.LastName;
+            existUser.Email = userRequest.Email;
+            existUser.ModifyDate = DateTime.Now;
+            existUser.ModifyUser = userRequest.ModifyUser;
+            existUser.UserTypes.Id = userRequest.IdUserType;
+            existUser.UserTypes.Type = Enum.GetName(typeof(UsersTypeEnum), userRequest.IdUserType);
+
+            return existUser;
         }
 
         public static Users ToDatabaseModel(this DeleteUserRequest userRequest, Users existUser)
@@ -71,24 +63,11 @@ namespace Bridgenext.DataAccess.DTOAdapter
                 return null;
             }
 
-            var IdUser = Guid.NewGuid();
-            return new Users
-            {
-                Id = existUser.Id,
-                IdUserType = existUser.IdUserType,
-                FirstName = existUser.FirstName,
-                LastName = existUser.LastName,
-                Email = existUser.Email,
-                CreateDate = existUser.CreateDate,
-                CreateUser = existUser.CreateUser,
-                ModifyDate = DateTime.Now,
-                ModifyUser = userRequest.ModifyUser,
-                UserTypes = new UsersTypes()
-                {
-                    Id = existUser.IdUserType,
-                    Type = existUser.UserTypes.Type
-                }
-            };
+            existUser.ModifyDate = DateTime.Now;
+            existUser.ModifyUser = userRequest.ModifyUser;
+
+            return existUser;
+
         }
 
         public static IEnumerable<UserDto> ToDomainModel(this IEnumerable<Users> dbUsers)

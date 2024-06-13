@@ -10,7 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Minio;
 using Minio.DataModel.Args;
+using MongoDB.Driver;
 using Newtonsoft.Json;
+using System.Security.AccessControl;
 using System.Text;
 using UglyToad.PdfPig;
 
@@ -97,6 +99,17 @@ namespace Bridgenext.Engine.Strategy
                     if(! string.IsNullOrEmpty(fileContent))
                     {
                         process = await _mongoRepository.CreateDocument(_document, fileContent);
+                        
+                        if(!process)
+                        {
+                            var remove = new  RemoveObjectArgs()
+                             .WithBucket(minioConfig.BucketName)
+                             .WithObject(_document.TargetFile);
+
+                            await _minioClient.RemoveObjectAsync(remove);
+
+                            return null;
+                        }
                     }
                 }
                 catch (Exception ex)

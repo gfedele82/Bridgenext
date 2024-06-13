@@ -1,4 +1,5 @@
 ﻿using Bridgenext.DataAccess.Interfaces;
+using Bridgenext.DataAccess.Repositories;
 using Bridgenext.Models.Constant.Exceptions;
 using Bridgenext.Models.DTO.Request;
 using Bridgenext.Models.Enums;
@@ -8,28 +9,29 @@ using Microsoft.Extensions.Configuration;
 
 namespace Bridgenext.Engine.Validators
 {
-    public class DeleteUserRequestValidator : AbstractValidator<DeleteUserRequest>
+    public class DisableDocumentRequestValidator : AbstractValidator<DisableDocumentRequest>
     {
-        public DeleteUserRequestValidator(IUserRepository userRepository, IConfigurationRoot configuration)
+        public DisableDocumentRequestValidator(IUserRepository userRepository, IDocumentRepositoty documentRepository)
         {
-            Guid.TryParse(configuration["IdUserAdmin"], out Guid IdUserAdmin);
-
             RuleFor(x => x.Id).Must(y => y != Guid.Empty)
-                .WithMessage(UserExceptions.RequiredIdUser);
+                .WithMessage(DocumentExceptions.RequiredId);
 
-            RuleFor(x => x.Id).Must(y => y != IdUserAdmin)
+            RuleFor(x => x.Id).Must(y => documentRepository.IdExistsAsync(y).Result)
                 .When(z => z.Id != Guid.Empty)
-            .WithMessage(UserExceptions.CanNotDeleteUserAdmin);
+                .WithMessage(DocumentExceptions.DocumentNotExist);
 
             RuleFor(x => x.ModifyUser).Must(y => !string.IsNullOrEmpty(y))
-                .WithMessage(UserExceptions.CreateUserNotExist);
+                .WithMessage(DocumentExceptions.DocumentDisabled);
+
+            RuleFor(x => x.Comment).Must(y => !string.IsNullOrEmpty(y))
+                .WithMessage(DocumentExceptions.RequiredComment);
 
             RuleFor(x => x.ModifyUser).Must(y => userRepository.GetByCriteria(p => p.Email.ToLower().Equals(y.ToLower())).Result.FirstOrDefault()?.IdUserType == (int)UsersTypeEnum.Administrator)
                  .When(z => !string.IsNullOrEmpty(z.ModifyUser))
-                .WithMessage(UserExceptions.CreateUserNotExist);
+                .WithMessage(DocumentExceptions.DocumentDisabled);
         }
 
-        protected override bool PreValidate(ValidationContext<DeleteUserRequest> context, ValidationResult result)
+        protected override bool PreValidate(ValidationContext<DisableDocumentRequest> context, ValidationResult result)
         {
             if (context.InstanceToValidate == null)
             {

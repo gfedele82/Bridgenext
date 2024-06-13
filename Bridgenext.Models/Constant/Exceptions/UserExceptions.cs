@@ -11,7 +11,7 @@
         public readonly static string UserExist = "User already exist.";
         public readonly static string CreateUserNotExist = "It's necessary a exist user in the system to create/modify/delete users and it should be Administrator.";
         public readonly static string RequiredIdUser = "Id User must no be empty or null.";
-        public readonly static string CanNotDeleteUserAdmin = "User Admin can not deleted.";
+        public readonly static string CanNotDeleteUserAdmin = "User Admin can not updated/deleted.";
         public readonly static string UserNotExist = "User does not found";
     }
 }

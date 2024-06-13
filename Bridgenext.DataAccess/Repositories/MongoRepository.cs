@@ -3,8 +3,8 @@ using Bridgenext.Models.Configurations;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using MongoDB.Bson;
-using Bridgenext.Models.Constant.Exceptions;
 using Bridgenext.Models.Schema.DB;
+using Bridgenext.Models.Schema.NotSQL;
 
 namespace Bridgenext.DataAccess.Repositories
 {
@@ -44,13 +44,31 @@ namespace Bridgenext.DataAccess.Repositories
 
                 _collection.InsertOne(_mongoDocument);                 
             }
-            catch (Exception ex)
+            catch
             {
                 return false;
             }
 
 
             return true;
+        }
+
+        public async Task<List<MongoDocuments>> SearchByText(string text)
+        {
+            var clientSettings = MongoClientSettings.FromConnectionString(_stringConnection);
+            clientSettings.ServerApi = new ServerApi(ServerApiVersion.V1);
+
+            var _client = new MongoClient(clientSettings);
+            var _database = _client.GetDatabase(_databaseName);
+            var _collection = _database.GetCollection<MongoDocuments>(_collectionName);
+
+            var keys = Builders<MongoDocuments>.IndexKeys.Text(x => x.content);
+            var indexModel = new CreateIndexModel<MongoDocuments>(keys);
+            await _collection.Indexes.CreateOneAsync(indexModel);
+
+            var filter = Builders<MongoDocuments>.Filter.Text(text);
+
+            return await _collection.Find(filter).ToListAsync();
         }
     }
 }
