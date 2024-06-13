@@ -42,7 +42,7 @@ namespace Bridgenext.DataAccess.Repositories
                 { "CreateUser", document.CreateUser}
             };
 
-                _collection.InsertOne(_mongoDocument);                 
+                await _collection.InsertOneAsync(_mongoDocument);                 
             }
             catch
             {
@@ -51,6 +51,31 @@ namespace Bridgenext.DataAccess.Repositories
 
 
             return true;
+        }
+
+        public async Task<bool> DeleteDocument(Documents document)
+        {
+            var clientSettings = MongoClientSettings.FromConnectionString(_stringConnection);
+            clientSettings.ServerApi = new ServerApi(ServerApiVersion.V1);
+
+            var _client = new MongoClient(clientSettings);
+            var _database = _client.GetDatabase(_databaseName);
+            var _collection = _database.GetCollection<BsonDocument>(_collectionName);
+
+            try
+            {
+                var filter = Builders<BsonDocument>.Filter.Eq("IdDb", document.Id);
+
+                await _collection.DeleteOneAsync(filter);
+            }
+            catch
+            {
+                return false;
+            }
+
+
+            return true;
+
         }
 
         public async Task<List<MongoDocuments>> SearchByText(string text)

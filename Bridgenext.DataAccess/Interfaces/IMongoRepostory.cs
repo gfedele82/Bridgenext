@@ -8,5 +8,7 @@ namespace Bridgenext.DataAccess.Interfaces
         Task<bool> CreateDocument(Documents document, string text);
 
         Task<List<MongoDocuments>> SearchByText(string text);
+
+        Task<bool> DeleteDocument(Documents document);
     }
 }

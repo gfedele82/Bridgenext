@@ -1,36 +1,27 @@
 ﻿using Bridgenext.DataAccess.Interfaces;
 using Bridgenext.Engine.Interfaces;
-using Bridgenext.Models.Configurations;
+using Bridgenext.Engine.Interfaces.Providers;
 using Bridgenext.Models.DTO.Request;
 using Bridgenext.Models.Enums;
 using Bridgenext.Models.Schema.DB;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Minio;
-using Minio.DataModel.Args;
-using MongoDB.Driver;
 using Newtonsoft.Json;
-using System.Security.AccessControl;
 using System.Text;
 using UglyToad.PdfPig;
 
 namespace Bridgenext.Engine.Strategy
 {
     public class DocumentProcessDocument (ILogger<DocumentProcessImage> _logger,
-        IConfigurationRoot _configuration,
-        IMongoRepostory _mongoRepository): IProcessDocumentByType
+        IMongoRepostory _mongoRepository,
+        IMinioEngine _minioEngine): IProcessDocumentByType
     {
         private readonly string path = "Document";
 
         public async Task<Documents> CreateDocument(CreateDocumentRequest addDocumentRequest, Users user)
         {
-            bool process = true;
-
             _logger.LogInformation($"DocumentProcessDocument: Payload = {JsonConvert.SerializeObject(addDocumentRequest)}");
-
-            var minioConfig = _configuration.GetSection("Minio").Get<MinioSettings>();
 
             Documents _document = new Documents()
             {
@@ -57,71 +48,99 @@ namespace Bridgenext.Engine.Strategy
 
             };
 
-            using (var _minioClient = new MinioClient().WithEndpoint(minioConfig.EndPoint)
-                  .WithCredentials(minioConfig.AccessKey, minioConfig.SecretKey)
-                  .WithSSL(minioConfig.SSL).Build())
+            try
             {
 
-                try
+                _document = await _minioEngine.PutFile(_document);
+
+                var process = await ProcessDocumentMongo(_document);
+
+                if(!process)
                 {
-                    bool found = await _minioClient.BucketExistsAsync(new BucketExistsArgs().WithBucket(minioConfig.BucketName));
-                    if (!found)
-                    {
-                        await _minioClient.MakeBucketAsync(new MakeBucketArgs().WithBucket(minioConfig.BucketName));
-                    }
-
-                    var putRequest = new PutObjectArgs()
-                        .WithBucket(minioConfig.BucketName)
-                         .WithObject(_document.TargetFile)
-                         .WithFileName(_document.SourceFile);
-
-
-                    var respose = await _minioClient.PutObjectAsync(putRequest);
-                    _document.Size = respose.Size;
-
-                    string ext = Path.GetExtension(_document.SourceFile).ToUpper().Replace(".", "");
-
-                    string fileContent = string.Empty;
-
-                    if (ext.Equals("DOCX"))
-                    {
-                        fileContent = ReadWordFile(_document.SourceFile);
-                    }
-                    else if(ext.Equals("PDF"))
-                    {
-                        fileContent = ReadPdfFile(_document.SourceFile);
-                    }
-                    else if(ext.Equals("TXT"))
-                    {
-                        fileContent = ReadTXTFile(_document.SourceFile);
-                    }
-
-                    if(! string.IsNullOrEmpty(fileContent))
-                    {
-                        process = await _mongoRepository.CreateDocument(_document, fileContent);
-                        
-                        if(!process)
-                        {
-                            var remove = new  RemoveObjectArgs()
-                             .WithBucket(minioConfig.BucketName)
-                             .WithObject(_document.TargetFile);
-
-                            await _minioClient.RemoveObjectAsync(remove);
-
-                            return null;
-                        }
-                    }
+                    return null;
                 }
-                catch (Exception ex)
-                {
-                    _logger.LogError($"CreateDocument: Payload = {JsonConvert.SerializeObject(addDocumentRequest)} - Error = {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"CreateDocument: Payload = {JsonConvert.SerializeObject(addDocumentRequest)} - Error = {ex.Message}");
 
+                return null;
+            }
+
+            return _document;
+        }
+
+        public async Task<Documents> UpdateDocument(UpdateDocumentFileRequest updateDocumnetFileRequest, Users user, Documents existDocument)
+        {
+            _logger.LogInformation($"UpdateDocument: Payload = {JsonConvert.SerializeObject(updateDocumnetFileRequest)}");
+
+            await _minioEngine.DeleteFile(existDocument);
+
+            await _mongoRepository.DeleteDocument(existDocument);
+
+            existDocument.ModifyUser = updateDocumnetFileRequest.ModifyUser;
+            existDocument.ModifyDate = DateTime.Now;
+            existDocument.FileName = Path.GetFileName(updateDocumnetFileRequest.File);
+            existDocument.DocumentType.Id = (int)FileTypes.Document;
+            existDocument.DocumentType.Type = Enum.GetName(typeof(FileTypes), FileTypes.Document);
+            existDocument.SourceFile = updateDocumnetFileRequest.File;
+            existDocument.TargetFile = $"{path}/{user.Id.ToString()}/{DateTime.Now.ToString("yyyyMMddhhmmss")}_{Path.GetFileName(updateDocumnetFileRequest.File)}";
+
+            try
+            {
+                existDocument = await _minioEngine.PutFile(existDocument);
+
+                var process = await ProcessDocumentMongo(existDocument);
+
+                if (!process)
+                {
                     return null;
                 }
 
-                return _document;
-
             }
+            catch (Exception ex)
+            {
+                _logger.LogError($"UpdateDocument: Payload = {JsonConvert.SerializeObject(updateDocumnetFileRequest)} - Error = {ex.Message}");
+
+                return null;
+            }
+
+            return existDocument;
+        }
+
+        private async Task<bool> ProcessDocumentMongo (Documents _document)
+        {
+            string ext = Path.GetExtension(_document.SourceFile).ToUpper().Replace(".", "");
+
+            string fileContent = string.Empty;
+
+            if (ext.Equals("DOCX"))
+            {
+                fileContent = ReadWordFile(_document.SourceFile);
+            }
+            else if (ext.Equals("PDF"))
+            {
+                fileContent = ReadPdfFile(_document.SourceFile);
+            }
+            else if (ext.Equals("TXT"))
+            {
+                fileContent = ReadTXTFile(_document.SourceFile);
+            }
+
+            if (!string.IsNullOrEmpty(fileContent))
+            {
+                var process = await _mongoRepository.CreateDocument(_document, fileContent);
+
+                if (!process)
+                {
+                    await _minioEngine.DeleteFile(_document);
+
+                    return false;
+                }
+            }
+
+            return true;
+
         }
 
         private string ReadTXTFile(string path)

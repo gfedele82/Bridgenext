@@ -29,7 +29,8 @@ namespace Bridgenext.Engine
         IValidator<CreateDocumentRequest> _addDocumentRequestValidator,
         IValidator<Guid> _downloadRequestValidator,
         IValidator<DisableDocumentRequest> _disabledocumentValidator,
-        IValidator<UpdateDocumentRequest> _updateDocumentValidator
+        IValidator<UpdateDocumentRequest> _updateDocumentValidator,
+        IValidator<UpdateDocumentFileRequest> _updateDocumentFileValidator
         ) : IDocumentEngine
     {
         public async Task<DocumentDto> CreateDocument(CreateDocumentRequest addDocumentRequest)
@@ -77,9 +78,55 @@ namespace Bridgenext.Engine
 
         }
 
+        public async Task<DocumentDto> UpdateFileDocument(UpdateDocumentFileRequest updateDocumentFileRequest)
+        {
+            _logger.LogInformation($"UpdateFileDocument: Payload = {JsonConvert.SerializeObject(updateDocumentFileRequest)}");
+
+            await _updateDocumentFileValidator.ValidateAndThrowAsync(updateDocumentFileRequest);
+
+            var user = (await _userRepository.GetAllByEmail(updateDocumentFileRequest.ModifyUser)).FirstOrDefault();
+
+            var selectType = FileTypes.Text;
+
+            var filextensionConfig = _configuration.GetSection("FilesExtension").Get<FilesExtensionSettings>();
+
+            var fileExtension = Path.GetExtension(updateDocumentFileRequest.File).ToUpper().Replace(".", "");
+
+            if (filextensionConfig.Image.Contains(fileExtension))
+            {
+                selectType = FileTypes.Image;
+            }
+            else if (filextensionConfig.Video.Contains(fileExtension))
+            {
+                selectType = FileTypes.Video;
+            }
+            else
+            {
+                selectType = FileTypes.Document;
+            }
+
+            var existDocument = await _documentRepository.GetAsync(updateDocumentFileRequest.Id);
+
+            var response = await _documentTypeResolver(selectType).UpdateDocument(updateDocumentFileRequest, user, existDocument);
+
+            if (response != null)
+            {
+                response = await _documentRepository.UpdateAsync(response);
+
+                return response.ToDomainModel();
+            }
+            else
+            {
+                throw new ApplicationException(GeneralExceptions.SystemFail);
+            }
+
+        }
+
         public async Task<DocumentDto> ModifyDocument(UpdateDocumentRequest documentRequest)
         {
             _logger.LogInformation($"ModifyDocument: Payload = {JsonConvert.SerializeObject(documentRequest)}");
+
+            await _updateDocumentValidator.ValidateAndThrowAsync(documentRequest);
 
             var existDocument = await _documentRepository.GetAsync(documentRequest.Id);
 

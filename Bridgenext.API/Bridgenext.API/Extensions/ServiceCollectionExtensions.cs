@@ -5,6 +5,8 @@ using Bridgenext.DataAccess.Interfaces;
 using Bridgenext.DataAccess.Repositories;
 using Bridgenext.Engine;
 using Bridgenext.Engine.Interfaces;
+using Bridgenext.Engine.Interfaces.Providers;
+using Bridgenext.Engine.Providers;
 using Bridgenext.Engine.Strategy;
 using Bridgenext.Engine.Utils;
 using Bridgenext.Engine.Validators;
@@ -34,6 +36,7 @@ namespace Bridgenext.API.Extensions
         {
             services.AddTransient<IUsersEngine, UsersEngine>();
             services.AddTransient<IDocumentEngine, DocumentEngine>();
+            services.AddTransient<IMinioEngine, MinioEngine>();
             services.AddScoped<DocumentProcessDocument>();
             services.AddScoped<DocumentProcessImage>();
             services.AddScoped<DocumentProcessText>();

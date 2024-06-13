@@ -137,5 +137,31 @@ namespace Bridgenext.API.Controllers
             }
         }
 
+        [HttpPut("UpdateFile/{id}")]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> ModifyDocumentFile(Guid id, UpdateDocumentFileRequest updateDocumentFileRequest)
+        {
+            _logger.LogInformation($"ModifyDocumentFile PUT API called at {DateTime.Now} with payload: {JsonConvert.SerializeObject(updateDocumentFileRequest)}");
+
+            try
+            {
+                if (id != updateDocumentFileRequest.Id)
+                {
+                    return BadRequest();
+                }
+
+                var existingCLUserLocation = await _documentEngine.UpdateFileDocument(updateDocumentFileRequest);
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"ModifyDocumentFile POST API called at {DateTime.Now} with payload: {JsonConvert.SerializeObject(updateDocumentFileRequest)} error:{ex.Message}");
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }

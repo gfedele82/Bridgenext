@@ -41,5 +41,10 @@ namespace Bridgenext.Engine.Strategy
              return _document;
 
         }
+
+        public async Task<Documents> UpdateDocument(UpdateDocumentFileRequest updateDocumnetFileRequest, Users user, Documents existDocument)
+        {
+            return existDocument;
+        }
     }
 }

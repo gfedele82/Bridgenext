@@ -6,5 +6,7 @@ namespace Bridgenext.Engine.Interfaces
     public interface IProcessDocumentByType
     {
         Task<Documents> CreateDocument(CreateDocumentRequest addDocumentRequest, Users user);
+
+        Task<Documents> UpdateDocument(UpdateDocumentFileRequest updateDocumnetFileRequest, Users user, Documents existDocument);
     }
 }

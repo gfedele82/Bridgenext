@@ -1,26 +1,22 @@
 ﻿using Bridgenext.Engine.Interfaces;
-using Bridgenext.Models.Configurations;
+using Bridgenext.Engine.Interfaces.Providers;
 using Bridgenext.Models.DTO.Request;
 using Bridgenext.Models.Enums;
 using Bridgenext.Models.Schema.DB;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Minio;
-using Minio.DataModel.Args;
 using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace Bridgenext.Engine.Strategy
 {
     public class DocumentProcessVideo (ILogger<DocumentProcessVideo> _logger,
-        IConfigurationRoot _configuration) : IProcessDocumentByType
+        IMinioEngine _minioEngine) : IProcessDocumentByType
     {
         private readonly string path = "Video";
 
         public async Task<Documents> CreateDocument(CreateDocumentRequest addDocumentRequest, Users user)
         {
             _logger.LogInformation($"DocumentProcessVideo: Payload = {JsonConvert.SerializeObject(addDocumentRequest)}");
-
-            var minioConfig = _configuration.GetSection("Minio").Get<MinioSettings>();
 
             Documents _document = new Documents()
             {
@@ -46,40 +42,47 @@ namespace Bridgenext.Engine.Strategy
                 TargetFile = $"{path}/{user.Id.ToString()}/{DateTime.Now.ToString("yyyyMMddhhmmss")}_{Path.GetFileName(addDocumentRequest.File)}"
             };
 
-            using (var _minioClient = new MinioClient().WithEndpoint(minioConfig.EndPoint)
-                  .WithCredentials(minioConfig.AccessKey, minioConfig.SecretKey)
-                  .WithSSL(minioConfig.SSL).Build())
+            try
             {
+                _document = await _minioEngine.PutFile(_document);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"CreateDocument: Payload = {JsonConvert.SerializeObject(addDocumentRequest)} - Error = {ex.Message}");
 
-                try
-                {
-                    bool found = await _minioClient.BucketExistsAsync(new BucketExistsArgs().WithBucket(minioConfig.BucketName));
-                    if (!found)
-                    {
-                        await _minioClient.MakeBucketAsync(new MakeBucketArgs().WithBucket(minioConfig.BucketName));
-                    }
-
-                    var putRequest = new PutObjectArgs()
-                        .WithBucket(minioConfig.BucketName)
-                         .WithObject(_document.TargetFile)
-                         .WithFileName(_document.SourceFile);
-
-
-                    var respose = await _minioClient.PutObjectAsync(putRequest);
-                    _document.Size = respose.Size;
-
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError($"CreateDocument: Payload = {JsonConvert.SerializeObject(addDocumentRequest)} - Error = {ex.Message}");
-
-                    return null;
-                }
-
-                return _document;
-
+                return null;
             }
 
+            return _document;
+
+        }
+
+        public async Task<Documents> UpdateDocument(UpdateDocumentFileRequest updateDocumnetFileRequest, Users user, Documents existDocument)
+        {
+            _logger.LogInformation($"UpdateDocument: Payload = {JsonConvert.SerializeObject(updateDocumnetFileRequest)}");
+
+            await _minioEngine.DeleteFile(existDocument);
+
+            existDocument.ModifyUser = updateDocumnetFileRequest.ModifyUser;
+            existDocument.ModifyDate = DateTime.Now;
+            existDocument.FileName = Path.GetFileName(updateDocumnetFileRequest.File);
+            existDocument.DocumentType.Id = (int)FileTypes.Video;
+            existDocument.DocumentType.Type = Enum.GetName(typeof(FileTypes), FileTypes.Video);
+            existDocument.SourceFile = updateDocumnetFileRequest.File;
+            existDocument.TargetFile = $"{path}/{user.Id.ToString()}/{DateTime.Now.ToString("yyyyMMddhhmmss")}_{Path.GetFileName(updateDocumnetFileRequest.File)}";
+
+            try
+            {
+                existDocument = await _minioEngine.PutFile(existDocument);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"UpdateDocument: Payload = {JsonConvert.SerializeObject(updateDocumnetFileRequest)} - Error = {ex.Message}");
+
+                return null;
+            }
+
+            return existDocument;
         }
     }
 }

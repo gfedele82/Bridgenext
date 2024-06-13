@@ -16,5 +16,7 @@ namespace Bridgenext.Engine.Interfaces
         Task<DocumentDto> DisableDocument(DisableDocumentRequest disableDocumentRequest);
 
         Task<DocumentDto> ModifyDocument(UpdateDocumentRequest documentRequest);
+
+        Task<DocumentDto> UpdateFileDocument(UpdateDocumentFileRequest updateDocumentFileRequest);
     }
 }
