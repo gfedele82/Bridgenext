@@ -18,5 +18,7 @@ namespace Bridgenext.Engine.Interfaces
         Task<DocumentDto> ModifyDocument(UpdateDocumentRequest documentRequest);
 
         Task<DocumentDto> UpdateFileDocument(UpdateDocumentFileRequest updateDocumentFileRequest);
+
+        Task<DocumentDto> DeleteDocument(DeleteDocumentRequest deleteDocument);
     }
 }

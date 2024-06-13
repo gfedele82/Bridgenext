@@ -1,5 +1,4 @@
-﻿using Amazon.Util.Internal;
-using Bridgenext.DataAccess.DTOAdapter;
+﻿using Bridgenext.DataAccess.DTOAdapter;
 using Bridgenext.DataAccess.Interfaces;
 using Bridgenext.Engine.Interfaces;
 using Bridgenext.Engine.Utils;
@@ -30,7 +29,8 @@ namespace Bridgenext.Engine
         IValidator<Guid> _downloadRequestValidator,
         IValidator<DisableDocumentRequest> _disabledocumentValidator,
         IValidator<UpdateDocumentRequest> _updateDocumentValidator,
-        IValidator<UpdateDocumentFileRequest> _updateDocumentFileValidator
+        IValidator<UpdateDocumentFileRequest> _updateDocumentFileValidator,
+        IValidator<DeleteDocumentRequest> _deleteDocumentValidator
         ) : IDocumentEngine
     {
         public async Task<DocumentDto> CreateDocument(CreateDocumentRequest addDocumentRequest)
@@ -156,6 +156,26 @@ namespace Bridgenext.Engine
             await _commentRepository.InsertAsync(dbComment).ConfigureAwait(false);
 
             return dbDocument.ToDomainModel();
+        }
+
+        public async Task<DocumentDto> DeleteDocument(DeleteDocumentRequest deleteDocument)
+        {
+            await _deleteDocumentValidator.ValidateAndThrowAsync(deleteDocument);
+
+            _logger.LogInformation($"DeleteDocument: Payload = {JsonConvert.SerializeObject(deleteDocument)}");
+
+            var existingDocument = await _documentRepository.GetAsync(deleteDocument.Id);
+
+            if (existingDocument == null)
+                return null;
+
+            var selectType = (FileTypes)existingDocument.DocumentType.Id;
+
+            existingDocument = await _documentTypeResolver(selectType).DeleteDocument(deleteDocument,existingDocument);
+
+            await _documentRepository.DeleteAsync(existingDocument);
+
+            return existingDocument.ToDomainModel();
         }
 
         public async Task<DocumentDto> GetDocumentById(Guid id)

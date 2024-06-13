@@ -153,6 +153,9 @@ namespace Bridgenext.Engine
 
             var existingUser = await _userRepository.GetAsync(deleteUser.Id);
 
+            if (existingUser == null)
+                return null;
+
             existingUser = deleteUser.ToDatabaseModel(existingUser);
 
             await _userRepository.DeleteAsync(existingUser);

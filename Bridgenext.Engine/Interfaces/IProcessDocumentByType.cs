@@ -8,5 +8,7 @@ namespace Bridgenext.Engine.Interfaces
         Task<Documents> CreateDocument(CreateDocumentRequest addDocumentRequest, Users user);
 
         Task<Documents> UpdateDocument(UpdateDocumentFileRequest updateDocumnetFileRequest, Users user, Documents existDocument);
+
+        Task<Documents> DeleteDocument(DeleteDocumentRequest deleteDocumnetFileRequest, Documents existDocument);
     }
 }

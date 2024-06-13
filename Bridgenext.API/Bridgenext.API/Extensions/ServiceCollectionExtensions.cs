@@ -66,6 +66,9 @@ namespace Bridgenext.API.Extensions
             services.AddTransient<IValidator<CreateDocumentRequest>, CreateDocumentRequestValidator>();
             services.AddTransient<IValidator<Guid>, DownloadDocumentRequestValidator>();
             services.AddTransient<IValidator<DisableDocumentRequest>, DisableDocumentRequestValidator>();
+            services.AddTransient<IValidator<UpdateDocumentFileRequest>, UpdateDocumentFileValidator>();
+            services.AddTransient<IValidator<UpdateDocumentRequest>, UpdateDocumentRequestValidator>();
+            services.AddTransient<IValidator<DeleteDocumentRequest>, DeleteDocumentRequestValidator>();
         }
 
         public static void RegisterDatabaseContext(this IServiceCollection services, IConfigurationRoot configuration)

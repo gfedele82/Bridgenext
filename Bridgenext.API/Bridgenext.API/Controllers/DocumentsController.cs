@@ -100,7 +100,7 @@ namespace Bridgenext.API.Controllers
                     return BadRequest();
                 }
 
-                var existingCLUserLocation = await _documentEngine.DisableDocument(disableDocumentRequest);
+                await _documentEngine.DisableDocument(disableDocumentRequest);
 
                 return NoContent();
             }
@@ -126,7 +126,7 @@ namespace Bridgenext.API.Controllers
                     return BadRequest();
                 }
 
-                var existingCLUserLocation = await _documentEngine.ModifyDocument(updateDocumentRequest);
+                await _documentEngine.ModifyDocument(updateDocumentRequest);
 
                 return NoContent();
             }
@@ -152,13 +152,37 @@ namespace Bridgenext.API.Controllers
                     return BadRequest();
                 }
 
-                var existingCLUserLocation = await _documentEngine.UpdateFileDocument(updateDocumentFileRequest);
+                await _documentEngine.UpdateFileDocument(updateDocumentFileRequest);
 
                 return NoContent();
             }
             catch (Exception ex)
             {
                 _logger.LogError($"ModifyDocumentFile POST API called at {DateTime.Now} with payload: {JsonConvert.SerializeObject(updateDocumentFileRequest)} error:{ex.Message}");
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeleteDocument(DeleteDocumentRequest deleteDocument)
+        {
+            _logger.LogInformation($"DeleteDocument DELETE API called at {DateTime.Now} with payload: {JsonConvert.SerializeObject(deleteDocument)}");
+
+            try
+            {
+
+                var existDocument = await _documentEngine.DeleteDocument(deleteDocument);
+                if (existDocument == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(existDocument);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"DeleteDocument POST API called at {DateTime.Now} with payload: {JsonConvert.SerializeObject(deleteDocument.Id)} error:{ex.Message}");
                 return BadRequest(ex.Message);
             }
         }

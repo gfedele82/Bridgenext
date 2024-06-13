@@ -1,4 +1,5 @@
-﻿using Bridgenext.Engine.Interfaces;
+﻿using Bridgenext.DataAccess.Interfaces;
+using Bridgenext.Engine.Interfaces;
 using Bridgenext.Engine.Interfaces.Providers;
 using Bridgenext.Models.DTO.Request;
 using Bridgenext.Models.Enums;
@@ -9,7 +10,8 @@ using Newtonsoft.Json;
 namespace Bridgenext.Engine.Strategy
 {
     public class DocumentProcessImage(ILogger<DocumentProcessImage> _logger,
-        IMinioEngine _minioEngine) : IProcessDocumentByType
+        IMinioEngine _minioEngine,
+        ICommentRepository _commentRepository) : IProcessDocumentByType
     {
         private readonly string path = "Image";
 
@@ -82,6 +84,25 @@ namespace Bridgenext.Engine.Strategy
 
                 return null;
             }
+
+            return existDocument;
+        }
+
+        public async Task<Documents> DeleteDocument(DeleteDocumentRequest deleteDocumnetFileRequest, Documents existDocument)
+        {
+            _logger.LogInformation($"DeleteDocument: Payload = {JsonConvert.SerializeObject(deleteDocumnetFileRequest)}");
+
+            existDocument.ModifyDate = DateTime.Now;
+            existDocument.ModifyUser = deleteDocumnetFileRequest.ModifyUser;
+
+            var comments = await _commentRepository.GetByCriteria(x => x.IdDocumnet == existDocument.Id);
+
+            foreach (var comment in comments)
+            {
+                await _commentRepository.DeleteAsync(comment);
+            }
+
+            await _minioEngine.DeleteFile(existDocument);
 
             return existDocument;
         }

@@ -102,7 +102,7 @@ namespace Bridgenext.API.Controllers
                     return BadRequest();
                 }
 
-                var existingCLUserLocation = await _userEngine.ModifyUser(updateUser);
+                await _userEngine.ModifyUser(updateUser);
 
                 return NoContent();
             }
@@ -122,13 +122,13 @@ namespace Bridgenext.API.Controllers
             try
             {
 
-                var existingCLUserLocation = await _userEngine.DeleteUser(deleteUser);
-                if (existingCLUserLocation == null)
+                var existingUser= await _userEngine.DeleteUser(deleteUser);
+                if (existingUser == null)
                 {
                     return NotFound();
                 }
 
-                return Ok(existingCLUserLocation);
+                return Ok(existingUser);
             }
             catch (Exception ex)
             {

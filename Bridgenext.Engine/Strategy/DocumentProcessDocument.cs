@@ -1,4 +1,5 @@
 ﻿using Bridgenext.DataAccess.Interfaces;
+using Bridgenext.DataAccess.Repositories;
 using Bridgenext.Engine.Interfaces;
 using Bridgenext.Engine.Interfaces.Providers;
 using Bridgenext.Models.DTO.Request;
@@ -15,7 +16,8 @@ namespace Bridgenext.Engine.Strategy
 {
     public class DocumentProcessDocument (ILogger<DocumentProcessImage> _logger,
         IMongoRepostory _mongoRepository,
-        IMinioEngine _minioEngine): IProcessDocumentByType
+        IMinioEngine _minioEngine,
+        ICommentRepository _commentRepository) : IProcessDocumentByType
     {
         private readonly string path = "Document";
 
@@ -103,6 +105,32 @@ namespace Bridgenext.Engine.Strategy
                 _logger.LogError($"UpdateDocument: Payload = {JsonConvert.SerializeObject(updateDocumnetFileRequest)} - Error = {ex.Message}");
 
                 return null;
+            }
+
+            return existDocument;
+        }
+
+        public async Task<Documents> DeleteDocument(DeleteDocumentRequest deleteDocumnetFileRequest, Documents existDocument)
+        {
+            _logger.LogInformation($"DeleteDocument: Payload = {JsonConvert.SerializeObject(deleteDocumnetFileRequest)}");
+
+            existDocument.ModifyDate = DateTime.Now;
+            existDocument.ModifyUser = deleteDocumnetFileRequest.ModifyUser;
+
+            var comments = await _commentRepository.GetByCriteria(x => x.IdDocumnet == existDocument.Id);
+
+            foreach (var comment in comments)
+            {
+                await _commentRepository.DeleteAsync(comment);
+            }
+
+            await _minioEngine.DeleteFile(existDocument);
+
+            string ext = Path.GetExtension(existDocument.SourceFile).ToUpper().Replace(".", "");
+
+            if(ext.Equals("DOCX") || ext.Equals("PDF") || ext.Equals("TXT"))
+            {
+                await _mongoRepository.DeleteDocument(existDocument);
             }
 
             return existDocument;
