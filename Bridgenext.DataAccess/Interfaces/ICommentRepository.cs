@@ -7,10 +7,14 @@ namespace Bridgenext.DataAccess.Interfaces
     {
         Task<IEnumerable<Comments>> GetAll();
 
+        Task<Comments> GetAsync(Guid id);
+
         Task<Comments> InsertAsync(Comments comment);
 
         Task<IEnumerable<Comments>> GetByCriteria(Expression<Func<Comments, bool>> predicateSearch);
 
         Task DeleteAsync(Comments comment);
+
+        Task<bool> IdExistsAsync(Guid Id);
     }
 }

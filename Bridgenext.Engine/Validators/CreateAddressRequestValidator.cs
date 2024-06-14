@@ -1,8 +1,5 @@
-﻿using Bridgenext.DataAccess.Interfaces;
-using Bridgenext.DataAccess.Repositories;
-using Bridgenext.Models.Constant.Exceptions;
+﻿using Bridgenext.Models.Constant.Exceptions;
 using Bridgenext.Models.DTO.Request;
-using Bridgenext.Models.Enums;
 using FluentValidation;
 using FluentValidation.Results;
 

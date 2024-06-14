@@ -36,6 +36,7 @@ namespace Bridgenext.API.Extensions
         {
             services.AddTransient<IUsersEngine, UsersEngine>();
             services.AddTransient<IDocumentEngine, DocumentEngine>();
+            services.AddTransient<ICommentEngine, CommentEngine>();
             services.AddTransient<IMinioEngine, MinioEngine>();
             services.AddScoped<DocumentProcessDocument>();
             services.AddScoped<DocumentProcessImage>();
@@ -69,6 +70,8 @@ namespace Bridgenext.API.Extensions
             services.AddTransient<IValidator<UpdateDocumentFileRequest>, UpdateDocumentFileValidator>();
             services.AddTransient<IValidator<UpdateDocumentRequest>, UpdateDocumentRequestValidator>();
             services.AddTransient<IValidator<DeleteDocumentRequest>, DeleteDocumentRequestValidator>();
+            services.AddTransient<IValidator<CreateCommetRequest>, CreateCommetRequestValidator>();
+            services.AddTransient<IValidator<DeleteCommetRequest>, DeleteCommetRequestValidator>();
         }
 
         public static void RegisterDatabaseContext(this IServiceCollection services, IConfigurationRoot configuration)
