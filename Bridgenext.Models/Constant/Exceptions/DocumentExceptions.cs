@@ -7,8 +7,7 @@
         public readonly static string RequiredName = "Name must not be empty or null.";
         public readonly static string RequiredComment = "Comment must not be empty or null.";
         public readonly static string RequiredDescription = "Description must not be empty or null.";
-        public readonly static string RequiredFileContentNotNull = "File and Content must not be empty or null at the same time.";
-        public readonly static string RequiredFileContentSameTime = "File and Content must not be selected at the same time.";
+        public readonly static string RequiredFileContentSameTime = "File and Content must not be selected or null/empty at the same time.";
         public readonly static string UserNotExist = "User does not found.";
         public readonly static string FileNotExist = "File does not exist.";
         public readonly static string RequiredId = "Id must not be empty or null.";

@@ -17,15 +17,10 @@ namespace Bridgenext.Engine.Validators
         {
             _configuration = configuration;
             _userRepository = userRepository;
-           _commentRepository = commentRepository;
+            _commentRepository = commentRepository;
 
             RuleFor(x => x.Id).Must(y => y != Guid.Empty)
                 .WithMessage(CommentExceptions.RequiredId);
-
-            RuleFor(x => x.Id).Must(y => commentRepository.IdExistsAsync(y).Result)
-                .When(z => z.Id != Guid.Empty)
-                .WithMessage(CommentExceptions.CommentNotExist);
-
 
             RuleFor(x => x.ModifyUser).Must(y => !string.IsNullOrEmpty(y))
                 .WithMessage(CommentExceptions.CreateUserNotExist);
@@ -36,7 +31,7 @@ namespace Bridgenext.Engine.Validators
 
             RuleFor(x => new { UserModify = x.ModifyUser, Id = x.Id }).Must(y => VerifyUser(y.UserModify, y.Id).Result)
                 .When(z => !string.IsNullOrEmpty(z.ModifyUser))
-                .WithMessage(DocumentExceptions.CreateUserNotExist);
+                .WithMessage(CommentExceptions.CreateUserNotExist);
 
 
         }
@@ -49,15 +44,15 @@ namespace Bridgenext.Engine.Validators
 
             var user = (await _userRepository.GetByCriteria(p => p.Email.ToLower().Equals(userModify.ToLower()))).FirstOrDefault();
 
-            var document = (await _commentRepository.GetAsync(commentId));
+            var comment = (await _commentRepository.GetAsync(commentId));
 
             if (user == null)
                 return false;
 
-            if (!(document.Users.Id == IdUserAdmin || document.Users.Id == user.Id))
+            if (!(comment.Users.Id == IdUserAdmin || comment.Users.Id == user.Id))
                 response = false;
 
-            return true;
+            return response;
         }
 
         protected override bool PreValidate(ValidationContext<DeleteCommetRequest> context, ValidationResult result)

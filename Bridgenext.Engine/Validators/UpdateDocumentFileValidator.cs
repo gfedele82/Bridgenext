@@ -65,7 +65,7 @@ namespace Bridgenext.Engine.Validators
             if (!(document.Users.Id == IdUserAdmin || document.Users.Id == user.Id))
                 response = false;
 
-            return true;
+            return response;
         }
 
         protected override bool PreValidate(ValidationContext<UpdateDocumentFileRequest> context, ValidationResult result)

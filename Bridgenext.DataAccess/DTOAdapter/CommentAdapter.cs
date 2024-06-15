@@ -8,7 +8,7 @@ namespace Bridgenext.DataAccess.DTOAdapter
     {
         public static Comments ToDatabaseModel(this CreateCommetRequest commentRequest, Documents document, Users user)
         {
-            if (commentRequest == null)
+            if (commentRequest == null || document == null || user == null)
             {
                 return null;
             }
@@ -28,7 +28,7 @@ namespace Bridgenext.DataAccess.DTOAdapter
 
         public static Comments ToDatabaseModel(this DisableDocumentRequest documentRequest, Documents document, Users user)
         {
-            if (documentRequest == null)
+            if (documentRequest == null || document == null || user == null)
             {
                 return null;
             }

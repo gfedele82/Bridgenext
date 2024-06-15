@@ -30,6 +30,10 @@ namespace Bridgenext.Engine.Validators
             RuleFor(x => x.CreateUser).Must(y => !string.IsNullOrEmpty(y))
                 .WithMessage(UserExceptions.CreateUserNotExist);
 
+            RuleFor(x => x.CreateUser).Must(y => userRepository.IdExistsAsync(y).Result)
+                .When(z => !string.IsNullOrEmpty(z.CreateUser))
+                .WithMessage(UserExceptions.CreateUserNotExist);
+
             RuleFor(x => x.Email).Must(y => validateEmailRegex.IsMatch(y))
                 .When(z => !string.IsNullOrEmpty(z.Email))
                 .WithMessage(UserExceptions.InvalidEmail);
@@ -39,8 +43,8 @@ namespace Bridgenext.Engine.Validators
             .WithMessage(UserExceptions.UserExist);
 
             RuleFor(x => x.CreateUser).Must(y => userRepository.GetByCriteria(p => p.Email.ToLower().Equals(y.ToLower())).Result.FirstOrDefault()?.IdUserType == (int)UsersTypeEnum.Administrator)
-             .When(z => !string.IsNullOrEmpty(z.CreateUser))
-            .WithMessage(UserExceptions.CreateUserNotExist);
+                .When(z => !string.IsNullOrEmpty(z.CreateUser))
+                .WithMessage(UserExceptions.CreateUserNotExist);
 
         }
 

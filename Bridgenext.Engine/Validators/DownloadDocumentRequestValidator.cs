@@ -11,6 +11,10 @@ namespace Bridgenext.Engine.Validators
             RuleFor(x => x).Must(y => y != Guid.Empty)
                .WithMessage(DocumentExceptions.RequiredId);
 
+            RuleFor(x => x).Must(y => documentRepository.IdExistsAsync(y).Result)
+                .When(z => z != Guid.Empty)
+                .WithMessage(DocumentExceptions.DocumentNotExist);
+
             RuleFor(x => x).Must(y => ! string.IsNullOrEmpty(documentRepository.GetAsync(y).Result.TargetFile))
                 .When(z => z != Guid.Empty)
                 .WithMessage(DocumentExceptions.FileDoesNotHaveFile);

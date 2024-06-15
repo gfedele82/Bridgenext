@@ -17,15 +17,7 @@ namespace Bridgenext.Engine.Validators
             RuleFor(x => x.Description).Must(y => !string.IsNullOrEmpty(y))
                 .WithMessage(DocumentExceptions.RequiredDescription);
 
-            RuleFor(x => new { x.File, x.Content }).Must(y => !string.IsNullOrEmpty(y.Content) || !string.IsNullOrEmpty(y.File))
-                .WithMessage(DocumentExceptions.RequiredFileContentNotNull);
-
-            RuleFor(x =>  x.File).Must(y => !string.IsNullOrEmpty(y))
-                .When(z => string.IsNullOrEmpty(z.Content))
-                .WithMessage(DocumentExceptions.RequiredFileContentSameTime);
-
-            RuleFor(x => x.Content).Must(y => !string.IsNullOrEmpty(y))
-                .When(z => string.IsNullOrEmpty(z.File))
+            RuleFor(x => new { x.File, x.Content }).Must(y => (!string.IsNullOrEmpty(y.File) && string.IsNullOrEmpty(y.Content)) || (string.IsNullOrEmpty(y.File) && !string.IsNullOrEmpty(y.Content)))
                 .WithMessage(DocumentExceptions.RequiredFileContentSameTime);
 
             RuleFor(x => x.CreateUser).Must(y => !string.IsNullOrEmpty(y))

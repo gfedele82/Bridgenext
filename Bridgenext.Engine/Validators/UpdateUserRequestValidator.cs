@@ -67,7 +67,7 @@ namespace Bridgenext.Engine.Validators
             if (!(user.IdUserType == (int)UsersTypeEnum.Administrator || user.Id == userIdModfy))
                 response = false;
 
-            return true;
+            return response;
         }
 
 
