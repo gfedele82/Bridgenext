@@ -83,6 +83,8 @@ namespace Bridgenext.Engine.Strategy
             existDocument.ModifyUser = updateDocumnetFileRequest.ModifyUser;
             existDocument.ModifyDate = DateTime.Now;
             existDocument.FileName = Path.GetFileName(updateDocumnetFileRequest.File);
+            existDocument.Name = updateDocumnetFileRequest.Name;
+            existDocument.Description = updateDocumnetFileRequest.Description;
             existDocument.DocumentType.Id = (int)FileTypes.Document;
             existDocument.DocumentType.Type = Enum.GetName(typeof(FileTypes), FileTypes.Document);
             existDocument.SourceFile = updateDocumnetFileRequest.File;

@@ -68,6 +68,8 @@ namespace Bridgenext.Engine.Strategy
             existDocument.ModifyDate = DateTime.Now;
             existDocument.FileName = Path.GetFileName(updateDocumnetFileRequest.File);
             existDocument.DocumentType.Id = (int)FileTypes.Video;
+            existDocument.Name = updateDocumnetFileRequest.Name;
+            existDocument.Description = updateDocumnetFileRequest.Description;
             existDocument.DocumentType.Type = Enum.GetName(typeof(FileTypes), FileTypes.Video);
             existDocument.SourceFile = updateDocumnetFileRequest.File;
             existDocument.TargetFile = $"{path}/{user.Id.ToString()}/{DateTime.Now.ToString("yyyyMMddhhmmss")}_{Path.GetFileName(updateDocumnetFileRequest.File)}";

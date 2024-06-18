@@ -42,7 +42,7 @@ namespace Bridgenext.Test.UnitTest.Engines.Validator
         }
 
         [Test]
-        public async Task Given_ValidPayload_With_ValidUserDocument_WhenInvokeValidator_Then_ItShouldPassValidation()
+        public async Task Given_ValidPayload_With_ValidUser_WhenInvokeValidator_Then_ItShouldPassValidation()
         {
             _userRepository.Setup(x => x.GetByCriteria(It.IsAny<Expression<Func<Users, bool>>>())).ReturnsAsync(_listUser);
 

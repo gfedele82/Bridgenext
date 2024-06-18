@@ -31,6 +31,11 @@ namespace Bridgenext.Engine.Validators
                 .When(z => z.Id != Guid.Empty && documentRepository.IdExistsAsync(z.Id).Result && !string.IsNullOrEmpty(z.File))
                 .WithMessage(DocumentExceptions.DocumentNotMatch);
 
+            RuleFor(x => x.Name).Must(y => !string.IsNullOrEmpty(y))
+                .WithMessage(DocumentExceptions.RequiredName);
+
+            RuleFor(x => x.Description).Must(y => !string.IsNullOrEmpty(y))
+                .WithMessage(DocumentExceptions.RequiredDescription);
 
             RuleFor(x => x.ModifyUser).Must(y => !string.IsNullOrEmpty(y))
                 .WithMessage(DocumentExceptions.CreateUserNotExist);

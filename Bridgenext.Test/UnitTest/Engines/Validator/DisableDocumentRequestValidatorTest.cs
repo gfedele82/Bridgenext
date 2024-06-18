@@ -69,7 +69,7 @@ namespace Bridgenext.Test.UnitTest.Engines.Validator
         }
 
         [Test]
-        public void Given_InvalidPayload_With_NotExistd_and_Allowed_WhenInvokeValidator_Then_ItShouldNotPassValidation()
+        public void Given_InvalidPayload_With_NotExistId_and_Allowed_WhenInvokeValidator_Then_ItShouldNotPassValidation()
         {
             _documentRepository.Setup(x => x.IdExistsAsync(It.IsAny<Guid>())).ReturnsAsync(false);
 

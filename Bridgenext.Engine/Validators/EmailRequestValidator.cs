@@ -9,7 +9,7 @@ namespace Bridgenext.Engine.Validators
     {
         Regex validateEmailRegex = new Regex("^\\S+@\\S+\\.\\S+$");
 
-        public EmailRequestValidator(IUserRepository userRepository)
+        public EmailRequestValidator()
         {
 
             RuleFor(x => x).Must(y => !string.IsNullOrEmpty(y))

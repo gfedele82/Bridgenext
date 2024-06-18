@@ -32,7 +32,9 @@ namespace Bridgenext.Test.Builders
             {
                 File = "test.txt",
                 Id = Guid.NewGuid(),
-                ModifyUser = _adminUser
+                ModifyUser = _adminUser,
+                Name = "Name",
+                Description = "Description"
             };
 
             _deleteDocumentRequest = new DeleteDocumentRequest()
