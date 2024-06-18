@@ -40,9 +40,9 @@ namespace Bridgenext.DataAccess.Repositories
             var predicate = PredicateBuilder.New<Documents>(true);
 
             Expression<Func<Documents, bool>> CreatePredicateDocumentName() =>
-                predicate.Or(x => EF.Functions.Like(x.Name, searchTextPattern));
+                predicate.Or(x => EF.Functions.Like(x.Name.ToLower(), searchTextPattern.ToLower()));
             Expression<Func<Documents, bool>> CreatePredicateDocumentDescription() =>
-                predicate.Or(x => EF.Functions.Like(x.Description, searchTextPattern));
+                predicate.Or(x => EF.Functions.Like(x.Description.ToLower(), searchTextPattern.ToLower()));
 
             var predicates = new Dictionary<string, Func<Expression<Func<Documents, bool>>>> {
                 { nameof(Documents.Name).ToLower(),  CreatePredicateDocumentName },

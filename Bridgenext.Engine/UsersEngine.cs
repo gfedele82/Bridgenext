@@ -115,8 +115,6 @@ namespace Bridgenext.Engine
                     await _addAddresesValidator.ValidateAndThrowAsync(addrees);
                 }
 
-                existingUser = await _userRepository.UpdateAsync(existingUser);
-
                 foreach (var address in newAddress)
                 {
                     var dbAddress = address.ToDatabaseModel(existingUser.Id);
@@ -129,6 +127,8 @@ namespace Bridgenext.Engine
                     var dbAddress = address.ToDatabaseModel(existAddress);
                     await _addressRepositoty.UpdateAsync(dbAddress);
                 }
+
+                existingUser = await _userRepository.UpdateAsync(existingUser);
 
                 _userRepository.CommitTransaction();
 

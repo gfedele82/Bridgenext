@@ -1,5 +1,6 @@
 ﻿using Bridgenext.Engine;
 using Bridgenext.Engine.Interfaces;
+using Bridgenext.Models.DTO;
 using Bridgenext.Models.DTO.Request;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -46,6 +47,15 @@ namespace Bridgenext.API.Controllers
             }
 
             return Ok(existingDocument);
+        }
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetDocumentPaged([FromQuery] Pagination pagination)
+        {
+            _logger.LogInformation($"GetDocumentPaged GET API called at {DateTime.Now} with payload: {JsonConvert.SerializeObject(pagination)}");
+
+            return Ok(await _documentEngine.GetAllDocument(pagination));
         }
 
         [HttpGet("Download/{id}")]

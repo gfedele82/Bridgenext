@@ -37,11 +37,11 @@ namespace Bridgenext.DataAccess.Repositories
             var predicate = PredicateBuilder.New<Addreesses>(true);
 
             Expression<Func<Addreesses, bool>> CreatePredicateZip() =>
-                predicate.Or(x => EF.Functions.Like(x.Zip, searchTextPattern));
+                predicate.Or(x => EF.Functions.Like(x.Zip.ToLower(), searchTextPattern.ToLower()));
             Expression<Func<Addreesses, bool>> CreatePredicateCountry() =>
-                predicate.Or(x => EF.Functions.Like(x.Country, searchTextPattern));
+                predicate.Or(x => EF.Functions.Like(x.Country.ToLower(), searchTextPattern.ToLower()));
             Expression<Func<Addreesses, bool>> CreatePredicateCity() =>
-                predicate.Or(x => EF.Functions.Like(x.City, searchTextPattern));
+                predicate.Or(x => EF.Functions.Like(x.City.ToLower(), searchTextPattern.ToLower()));
 
             var predicates = new Dictionary<string, Func<Expression<Func<Addreesses, bool>>>> {
                 { nameof(Addreesses.Country).ToLower(),  CreatePredicateCountry },

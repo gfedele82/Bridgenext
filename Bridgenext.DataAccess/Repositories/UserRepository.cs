@@ -46,13 +46,13 @@ namespace Bridgenext.DataAccess.Repositories
             var predicate = PredicateBuilder.New<Users>(true);
 
             Expression<Func<Users, bool>> CreatePredicateEmail() =>
-                predicate.Or(x => EF.Functions.Like(x.Email, searchTextPattern));
+                predicate.Or(x => EF.Functions.Like(x.Email.ToLower(), searchTextPattern.ToLower()));
             Expression<Func<Users, bool>> CreatePredicateCountry() =>
-                predicate.Or(x => x.Addreesses.Any( p => p.Country.Contains(searchTextPattern)));
+                predicate.Or(x => x.Addreesses.Any( p => p.Country.ToLower().Contains(searchTextPattern.ToLower())));
             Expression<Func<Users, bool>> CreatePredicateCity() =>
-                predicate.Or(x => x.Addreesses.Any(p => p.City.Contains(searchTextPattern)));
+                predicate.Or(x => x.Addreesses.Any(p => p.City.ToLower().Contains(searchTextPattern.ToLower())));
             Expression<Func<Users, bool>> CreatePredicateZip() =>
-                predicate.Or(x => x.Addreesses.Any(p => p.Zip.Contains(searchTextPattern)));
+                predicate.Or(x => x.Addreesses.Any(p => p.Zip.ToLower().Contains(searchTextPattern.ToLower())));
 
             var predicates = new Dictionary<string, Func<Expression<Func<Users, bool>>>> {
                 { nameof(Users.Email).ToLower(), CreatePredicateEmail },

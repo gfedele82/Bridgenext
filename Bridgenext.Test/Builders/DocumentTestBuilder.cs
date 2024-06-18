@@ -2,6 +2,8 @@
 using Bridgenext.Models.DTO.Request;
 using Bridgenext.Models.Enums;
 using Bridgenext.Models.Schema.DB;
+using Bridgenext.Models.Schema.NotSQL;
+using MongoDB.Bson;
 
 namespace Bridgenext.Test.Builders
 {
@@ -13,6 +15,7 @@ namespace Bridgenext.Test.Builders
         private UpdateDocumentRequest _updateDocumentRequest;
         private DisableDocumentRequest _disableDocumentRequest;
         private Documents _dbDocument;
+        private MongoDocuments _dbMongoDocument;
         private readonly string _adminUser = "admin@admin.admin";
 
         public DocumentTestBuilder()
@@ -88,6 +91,14 @@ namespace Bridgenext.Test.Builders
                     Email = _adminUser
                 }
             };
+
+            _dbMongoDocument = new MongoDocuments()
+            {
+                content = "test",
+                CreateUser = "test",
+                IdDb = Guid.NewGuid().ToString(),
+                uploadDate = DateTime.Now
+            };
         }
 
         public CreateDocumentRequest BuildCreate() => _createDocumentRequest;
@@ -101,6 +112,8 @@ namespace Bridgenext.Test.Builders
         public DisableDocumentRequest BuildDisable() => _disableDocumentRequest;
 
         public Documents DbBuild() => _dbDocument;
+
+        public MongoDocuments DbMongoBuild() => _dbMongoDocument;
 
     }
 }

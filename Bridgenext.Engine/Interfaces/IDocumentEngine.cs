@@ -1,4 +1,5 @@
-﻿using Bridgenext.Models.DTO.Request;
+﻿using Bridgenext.Models.DTO;
+using Bridgenext.Models.DTO.Request;
 using Bridgenext.Models.DTO.Response;
 
 namespace Bridgenext.Engine.Interfaces
@@ -20,5 +21,7 @@ namespace Bridgenext.Engine.Interfaces
         Task<DocumentDto> UpdateFileDocument(UpdateDocumentFileRequest updateDocumentFileRequest);
 
         Task<DocumentDto> DeleteDocument(DeleteDocumentRequest deleteDocument);
+
+        Task<GetPaginatedResponse<DocumentDto>> GetAllDocument(Pagination pagination);
     }
 }

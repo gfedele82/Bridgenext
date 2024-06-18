@@ -4,6 +4,7 @@ using Bridgenext.Engine.Interfaces;
 using Bridgenext.Engine.Utils;
 using Bridgenext.Models.Configurations;
 using Bridgenext.Models.Constant.Exceptions;
+using Bridgenext.Models.DTO;
 using Bridgenext.Models.DTO.Request;
 using Bridgenext.Models.DTO.Response;
 using Bridgenext.Models.Enums;
@@ -188,6 +189,21 @@ namespace Bridgenext.Engine
 
         }
 
+        public async Task<GetPaginatedResponse<DocumentDto>> GetAllDocument(Pagination pagination)
+        {
+            _logger.LogInformation("GetAllDocument");
+
+            var paginatedList = await _documentRepository.GetAllAsync(pagination);
+
+            return new GetPaginatedResponse<DocumentDto>
+            {
+                Total = paginatedList.Total,
+                PageNumber = pagination.PageNumber,
+                PageSize = pagination.PageSize,
+                Items = paginatedList.Items.ToDomainModel()
+            };
+        }
+
         public async Task<List<DocumentSearchDto>> GetDocumentByText(string text)
         {
             _logger.LogInformation($"GetDocumentByText: text = {text}");
@@ -221,7 +237,6 @@ namespace Bridgenext.Engine
             }
 
             return response;
-
         }
 
         public async Task<Tuple<string,MemoryStream>> Download(Guid id)
