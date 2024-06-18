@@ -41,7 +41,6 @@ namespace Bridgenext.Test.UnitTest.Engines
         DeleteDocumentRequest _deleteDocumentRequest;
         UserTestBuilder _userTestBuilder;
         DocumentTestBuilder _documentTestBuilder;
-        CommentTestBuilder _commentTestBuilder;
         Mock<IProcessDocumentByType>? _mockDocumentText;
         Mock<IProcessDocumentByType>? _mockDocumentVideo;
         Mock<IProcessDocumentByType>? _mockDocumentImage;
@@ -88,7 +87,6 @@ namespace Bridgenext.Test.UnitTest.Engines
                 _deleteDocumentValidator.Object);
             _userTestBuilder = new UserTestBuilder();
             _documentTestBuilder = new DocumentTestBuilder();
-            _commentTestBuilder = new CommentTestBuilder();
             _createDocumentRequest = _documentTestBuilder.BuildCreate();
             _disableDocumentRequest = _documentTestBuilder.BuildDisable();
             _updateDocumentRequest = _documentTestBuilder.BuildUpdate();

@@ -11,8 +11,6 @@ using Bridgenext.Models.Enums;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Minio;
-using Minio.DataModel.Args;
 using MongoDB.Driver;
 using Newtonsoft.Json;
 
@@ -243,31 +241,21 @@ namespace Bridgenext.Engine
         {
             _logger.LogInformation($"Download: Payload = {JsonConvert.SerializeObject(id)}");
 
-             await _downloadRequestValidator.ValidateAndThrowAsync(id);
+            await _downloadRequestValidator.ValidateAndThrowAsync(id);
 
             var dbDocument = await _documentRepository.GetAsync(id);
 
-            var minioConfig = _configuration.GetSection("Minio").Get<MinioSettings>();
+            var selectType = (FileTypes)dbDocument.IdDocumentType;
 
-            using (var _minioClient = new MinioClient().WithEndpoint(minioConfig.EndPoint)
-                  .WithCredentials(minioConfig.AccessKey, minioConfig.SecretKey)
-                  .WithSSL(minioConfig.SSL).Build())
+            var response = await _documentTypeResolver(selectType).Download(dbDocument);
+
+            if (response != null)
             {
-
-                var memoryStream = new MemoryStream();
-
-                await _minioClient.GetObjectAsync(new GetObjectArgs()
-                    .WithBucket(minioConfig.BucketName)
-                    .WithObject(dbDocument.TargetFile)
-                    .WithCallbackStream(stream =>
-                    {
-                        stream.CopyTo(memoryStream);
-                    }));
-
-                memoryStream.Position = 0;
-
-                return Tuple.Create(dbDocument.FileName,memoryStream);
-
+                return Tuple.Create(dbDocument.FileName, response);
+            }
+            else
+            {
+                throw new ApplicationException(GeneralExceptions.SystemFail);
             }
 
         }

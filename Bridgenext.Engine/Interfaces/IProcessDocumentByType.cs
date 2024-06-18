@@ -10,5 +10,7 @@ namespace Bridgenext.Engine.Interfaces
         Task<Documents> UpdateDocument(UpdateDocumentFileRequest updateDocumnetFileRequest, Users user, Documents existDocument);
 
         Task<Documents> DeleteDocument(DeleteDocumentRequest deleteDocumnetFileRequest, Documents existDocument);
+
+        Task<MemoryStream> Download(Documents document);
     }
 }

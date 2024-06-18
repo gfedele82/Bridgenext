@@ -216,5 +216,10 @@ namespace Bridgenext.Engine.Strategy
             return response;
         }
 
+        public async Task<MemoryStream> Download(Documents document)
+        {
+            return  await _minioEngine.GetDownload(document);
+        }
+
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Minio;
 using Minio.DataModel.Args;
+using Newtonsoft.Json;
 
 namespace Bridgenext.Engine.Providers
 {
@@ -14,6 +15,8 @@ namespace Bridgenext.Engine.Providers
 
         public async Task<Documents> PutFile(Documents _document)
         {
+            _logger.LogInformation($"PutFile  Payload : {JsonConvert.SerializeObject(_document)}");
+
             var minioConfig = _configuration.GetSection("Minio").Get<MinioSettings>();
 
             using (var _minioClient = new MinioClient().WithEndpoint(minioConfig.EndPoint)
@@ -40,6 +43,8 @@ namespace Bridgenext.Engine.Providers
 
         public async Task DeleteFile(Documents _document)
         {
+            _logger.LogInformation($"DeleteFile  Payload : {JsonConvert.SerializeObject(_document)}");
+
             var minioConfig = _configuration.GetSection("Minio").Get<MinioSettings>();
 
             using (var _minioClient = new MinioClient().WithEndpoint(minioConfig.EndPoint)
@@ -54,6 +59,34 @@ namespace Bridgenext.Engine.Providers
                 await _minioClient.RemoveObjectAsync(remove);
             }
 
+        }
+
+        public async Task<MemoryStream> GetDownload(Documents _document)
+        {
+            _logger.LogInformation($"GetDownload Payload : {JsonConvert.SerializeObject(_document)}"); 
+
+            var minioConfig = _configuration.GetSection("Minio").Get<MinioSettings>();
+
+            using (var _minioClient = new MinioClient().WithEndpoint(minioConfig.EndPoint)
+                    .WithCredentials(minioConfig.AccessKey, minioConfig.SecretKey)
+                    .WithSSL(minioConfig.SSL).Build())
+            {
+
+                var memoryStream = new MemoryStream();
+
+                await _minioClient.GetObjectAsync(new GetObjectArgs()
+                    .WithBucket(minioConfig.BucketName)
+                    .WithObject(_document.TargetFile)
+                    .WithCallbackStream(stream =>
+                    {
+                        stream.CopyTo(memoryStream);
+                    }));
+
+                memoryStream.Position = 0;
+
+                return memoryStream;
+
+            }
         }
     }
 }

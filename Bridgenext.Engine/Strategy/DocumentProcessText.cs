@@ -66,5 +66,10 @@ namespace Bridgenext.Engine.Strategy
 
             return existDocument;
         }
+
+        public async Task<MemoryStream> Download(Documents document)
+        {
+            return null;
+        }
     }
 }

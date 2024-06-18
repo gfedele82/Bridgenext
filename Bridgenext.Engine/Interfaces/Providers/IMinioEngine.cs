@@ -7,5 +7,7 @@ namespace Bridgenext.Engine.Interfaces.Providers
         Task<Documents> PutFile(Documents _document);
 
         Task DeleteFile(Documents _document);
+
+        Task<MemoryStream> GetDownload(Documents _document);
     }
 }
